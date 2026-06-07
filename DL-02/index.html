@@ -286,7 +286,7 @@
         <tr><td>ADS1115 ADC</td><td>16-bit precision provides highly accurate fuel level voltage readings.</td></tr>
         <tr><td>Polynomial Calibration</td><td>Uses Teltonika-style cubic polynomial (voltage → liters) for exact fuel curve mapping.</td></tr>
         <tr><td>3 Live Sensor Values</td><td>Broadcasts fuel in liters, fill percentage, and raw voltage simultaneously via emulated DS18B20.</td></tr>
-        <tr><td>Advanced Signal Smoothing</td><td>Configurable Simple (Responsive/Balanced/Stable) and Advanced (SMA/EMA/Median/Kalman) filters.</td></tr>
+        <tr><td>Signal Smoothing</td><td>Configurable presets (Responsive / Balanced / Stable) to eliminate fuel sloshing.</td></tr>
         <tr><td>NVS Storage</td><td>Calibration, filter settings, and WiFi credentials persist across reboots and power cycles.</td></tr>
         <tr><td>Wireless OTA Updates</td><td>Flash new firmware wirelessly via the web UI with built-in rollback protection.</td></tr>
         <tr><td>Watchdog Timer</td><td>Built-in 10-second timeout automatically restarts the device if a task hangs.</td></tr>
@@ -466,7 +466,6 @@
       powerful filtering algorithms to stabilise the reading. You can configure this in the <strong>Settings</strong> tab.
     </p>
 
-    <h3>Simple Mode (Default)</h3>
     <table class="wikitable">
       <thead><tr><th>Preset</th><th>Best For</th></tr></thead>
       <tbody>
@@ -476,19 +475,9 @@
       </tbody>
     </table>
 
-    <h3 style="margin-top:20px;">Advanced Mode</h3>
-    <p>For complex installations, you can select and tune the underlying filter manually:</p>
-    <ul style="margin-left: 20px; margin-bottom: 20px; color:#333; line-height:1.6;">
-      <li><strong>SMA (Simple Moving Average):</strong> Averages the last N readings.</li>
-      <li><strong>EMA (Exponential Moving Average):</strong> Applies more weight to recent samples based on tuning factor alpha.</li>
-      <li><strong>Median:</strong> Takes the middle value to eliminate spike outliers completely.</li>
-      <li><strong>Kalman Filter:</strong> A recursive filter modelling system change rate and sensor noise.</li>
-    </ul>
-
     <div class="callout info">
       <strong>Tip</strong>
-      If your fuel reading is jumping around unexpectedly, switch to <strong>Simple: Stable</strong>. 
-      For occasional voltage spikes, try <strong>Advanced: Median</strong>.
+      If your fuel reading is jumping around unexpectedly, switch to <strong>Stable</strong>. 
     </div>
 
     <!-- ══ 8. OTA FIRMWARE UPDATE ════════════════════════════════════════ -->
@@ -596,7 +585,7 @@
         <tr><td>Sensor Outputs</td><td>3 × DS18B20 1-Wire — Fuel Level (L), Voltage Reference, Fill Percent (%)</td></tr>
         <tr><td>Measurement Range</td><td>0–125 liters (Sensor 1) · 0–100% fill (Sensor 3)</td></tr>
         <tr><td>Calibration</td><td>Up to 10 points, cubic polynomial curve-fit. Export/import supported.</td></tr>
-        <tr><td>Signal Smoothing</td><td>Simple (Responsive/Balanced/Stable) or Advanced (SMA/EMA/Median/Kalman)</td></tr>
+        <tr><td>Signal Smoothing</td><td>3 presets — Responsive, Balanced (default), Stable</td></tr>
         <tr><td>Wireless</td><td>WiFi 802.11 b/g/n, 2.4 GHz</td></tr>
         <tr><td>Web Interface URL</td><td>http://192.168.4.1</td></tr>
         <tr><td>Default Hotspot Name</td><td>DL02-XXYY (unique per device — last 2 bytes of MAC address)</td></tr>
@@ -624,7 +613,7 @@
       <ul style="margin-left: 20px; color: #333; line-height: 1.6; font-size: 13px;">
         <li><strong>Product Renamed:</strong> Now officially DuraLink DL-02.</li>
         <li><strong>Security:</strong> Hotspot name is now unique per device (e.g. <code>DL02-XXYY</code>).</li>
-        <li><strong>New:</strong> Simple filter mode added with presets (Responsive, Balanced, Stable).</li>
+        <li><strong>New:</strong> Filter mode added with presets (Responsive, Balanced, Stable).</li>
         <li><strong>UI Redesign:</strong> Completely new dark-themed, mobile-friendly interface with tabbed navigation.</li>
       </ul>
     </div>
@@ -633,7 +622,7 @@
       <h3 style="margin-top: 0; padding-bottom: 4px; border-bottom: 1px solid #e0e8f0; color: #1a4a8a; font-size: 15px;">v1.1.0</h3>
       <ul style="margin-left: 20px; color: #333; line-height: 1.6; font-size: 13px;">
         <li><strong>New:</strong> Added a 3rd sensor channel to broadcast fuel fill percentage (0–100%).</li>
-        <li><strong>New:</strong> Added advanced, selectable filtering algorithms (SMA, EMA, Median, Kalman) for heavy sloshing environments.</li>
+        <li><strong>New:</strong> Added selectable filtering algorithms for heavy sloshing environments.</li>
       </ul>
     </div>
 

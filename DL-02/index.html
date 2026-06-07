@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DuraLink DL-02 — Fuel Level Monitor User Manual</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    color: #202122;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ── Top Bar ──────────────────────────────────────────────────────────── */
+  #topbar {
+    background: #000;
+    border-bottom: 2px solid #1a4a8a;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  }
+  #topbar .logo-wrap { display: flex; align-items: center; gap: 12px; }
+  #topbar .logo-wrap img { height: 32px; width: auto; }
+  #topbar nav a {
+    color: #fff; font-size: 13px; text-decoration: none;
+    margin-left: 22px; font-weight: 500;
+    transition: color .15s;
+  }
+  #topbar nav a:hover { color: #7ec8e3; text-decoration: underline; }
+
+  /* ── Breadcrumb ───────────────────────────────────────────────────────── */
+  #breadcrumb {
+    background: #eaf3fb;
+    border-bottom: 1px solid #c8d8e8;
+    padding: 7px 24px;
+    font-size: 12px;
+    color: #555;
+  }
+  #breadcrumb a { color: #1a4a8a; text-decoration: none; }
+  #breadcrumb span { margin: 0 6px; color: #999; }
+
+  /* ── Layout ───────────────────────────────────────────────────────────── */
+  #layout {
+    display: flex;
+    flex: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* ── Sidebar ──────────────────────────────────────────────────────────── */
+  #sidebar {
+    width: 230px;
+    flex-shrink: 0;
+    background: #f8f9fa;
+    border-right: 1px solid #d8dde4;
+    padding: 20px 0;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+  }
+  #sidebar h3 {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; color: #555;
+    padding: 0 16px 8px; border-bottom: 1px solid #d8dde4; margin-bottom: 8px;
+  }
+  #sidebar ul { list-style: none; }
+  #sidebar ul li a {
+    display: block; padding: 5px 16px; font-size: 13px; color: #333;
+    text-decoration: none; border-left: 3px solid transparent;
+    transition: background .15s, border-color .15s;
+  }
+  #sidebar ul li a:hover, #sidebar ul li a.active {
+    background: #e8f0fb; border-left-color: #1a4a8a; color: #1a4a8a;
+  }
+  #sidebar ul li.sub a { padding-left: 28px; font-size: 12px; color: #555; }
+  #sidebar ul li.sub a:hover { color: #1a4a8a; }
+
+  /* ── Main Content ─────────────────────────────────────────────────────── */
+  #content { flex: 1; padding: 28px 36px 60px; min-width: 0; }
+
+  /* ── Product Header ───────────────────────────────────────────────────── */
+  .product-header {
+    display: flex; align-items: flex-start; gap: 24px;
+    padding: 20px;
+    background: linear-gradient(135deg, #eaf3fb 0%, #f4f8fd 100%);
+    border: 1px solid #c8d8e8; border-radius: 6px; margin-bottom: 28px;
+  }
+  .product-logo {
+    flex-shrink: 0;
+    background: #000;
+    border: 1px solid #1a4a8a;
+    border-radius: 4px;
+    padding: 10px 16px;
+  }
+  .product-logo img { height: 44px; width: auto; display: block; }
+  .product-info h1 { font-size: 22px; color: #1a4a8a; font-weight: 700; margin-bottom: 4px; }
+  .product-info .subtitle { font-size: 13px; color: #555; margin-bottom: 10px; }
+  .product-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { background: #1a4a8a; color: #fff; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 3px; }
+  .tag.green { background: #2d7a2d; }
+  .tag.gray  { background: #666; }
+
+  /* ── Headings ─────────────────────────────────────────────────────────── */
+  h2 { font-size: 18px; color: #1a4a8a; border-bottom: 2px solid #c8d8e8; padding-bottom: 6px; margin: 32px 0 14px; }
+  h2:first-of-type { margin-top: 0; }
+  h3 { font-size: 15px; color: #1a4a8a; border-bottom: 1px solid #e0e8f0; padding-bottom: 4px; margin: 22px 0 10px; }
+  h4 { font-size: 13px; color: #333; font-weight: 700; margin: 16px 0 8px; }
+  p  { line-height: 1.65; margin-bottom: 10px; color: #333; }
+
+  /* ── Tables ───────────────────────────────────────────────────────────── */
+  .wikitable { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+  .wikitable th { background: #1a4a8a; color: #fff; padding: 8px 12px; text-align: left; font-weight: 600; }
+  .wikitable td { padding: 7px 12px; border: 1px solid #d0d8e0; vertical-align: top; line-height: 1.5; }
+  .wikitable tr:nth-child(even) td { background: #f2f6fb; }
+  .wikitable tr:hover td { background: #e6f0fb; }
+  .wikitable td:first-child { font-weight: 500; color: #1a4a8a; }
+  .wikitable.plain td:first-child { font-weight: normal; color: #333; }
+  .wikitable td code { background: #eef2f7; padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #c7254e; }
+
+  /* ── Callout Boxes ────────────────────────────────────────────────────── */
+  .callout {
+    padding: 14px 18px 14px 96px;
+    border-radius: 3px; margin: 16px 0;
+    font-size: 13px; line-height: 1.55;
+    position: relative;
+  }
+  .callout::before {
+    position: absolute; left: 14px; top: 14px;
+    font-size: 11px; font-weight: 700; letter-spacing: .5px;
+    width: 66px; text-align: right; padding-right: 14px;
+    border-right: 1px solid currentColor;
+  }
+  .callout.warning  { background: #fffbea; border: 1px solid #e6b800; border-left: 4px solid #e6b800; }
+  .callout.warning::before  { content: 'WARNING'; color: #a07800; }
+  .callout.info     { background: #edf5fd; border: 1px solid #90b8da; border-left: 4px solid #1a4a8a; }
+  .callout.info::before     { content: 'NOTE'; color: #1a4a8a; }
+  .callout.success  { background: #edf7ee; border: 1px solid #88c88a; border-left: 4px solid #2d7a2d; }
+  .callout.success::before  { content: 'TIP'; color: #2d7a2d; }
+  .callout.danger   { background: #fdf0f0; border: 1px solid #d8a0a0; border-left: 4px solid #b03030; }
+  .callout.danger::before   { content: 'CAUTION'; color: #b03030; }
+  .callout strong { display: block; margin-bottom: 2px; }
+
+  /* ── Feature Table ────────────────────────────────────────────────────── */
+  .feature-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0 20px; }
+  .feature-table td { padding: 8px 14px; border-bottom: 1px solid #e8eef5; vertical-align: top; }
+  .feature-table td:first-child { font-weight: 600; color: #1a4a8a; width: 240px; }
+  .feature-table tr:last-child td { border-bottom: none; }
+  .feature-table tr:nth-child(even) td { background: #f8fafc; }
+
+  /* ── Sensor ID Cards ──────────────────────────────────────────────────── */
+  .sensor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin: 12px 0 20px; }
+  .sensor-card { border: 1px solid #d0dcea; border-radius: 6px; padding: 14px; background: #fafcff; }
+  .sensor-card .sc-num { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #555; letter-spacing: .6px; margin-bottom: 4px; }
+  .sensor-card .sc-id  { font-family: 'Consolas', monospace; font-size: 13px; color: #c7254e; background: #eef2f7; padding: 4px 8px; border-radius: 3px; display: inline-block; margin-bottom: 6px; }
+  .sensor-card .sc-data { font-size: 12px; color: #555; }
+
+  /* ── Spec Table ───────────────────────────────────────────────────────── */
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0 20px; }
+  .spec-table tr { border-bottom: 1px solid #e0e8f0; }
+  .spec-table td { padding: 8px 14px; vertical-align: top; }
+  .spec-table td:first-child { width: 210px; font-weight: 600; color: #555; background: #f4f7fb; white-space: nowrap; }
+  .spec-table td:last-child  { color: #222; }
+
+  /* ── Footer ───────────────────────────────────────────────────────────── */
+  #footer { background: #1a2a40; color: #a0aec0; text-align: center; padding: 20px; font-size: 12px; }
+  #footer a { color: #7ec8e3; text-decoration: none; }
+  #footer strong { color: #fff; }
+
+  /* ── Responsive ───────────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #content { padding: 16px; }
+    .product-header { flex-direction: column; }
+    .feature-grid, .sensor-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP BAR ═══════════════════════════════════════════════════════════ -->
+<div id="topbar">
+  <div class="logo-wrap">
+    <img src="logo.png" alt="DuraLink">
+  </div>
+  <nav>
+    <a href="#overview">Overview</a>
+    <a href="#setup">Setup</a>
+    <a href="#portal">Web UI</a>
+    <a href="#calibration">Calibration</a>
+    <a href="#ota">OTA Update</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+  </nav>
+</div>
+
+<!-- ═══ BREADCRUMB ════════════════════════════════════════════════════════ -->
+<div id="breadcrumb">
+  <a href="#">Maruko Dura Solusi</a><span>›</span>
+  <a href="#">Products</a><span>›</span>
+  <strong>DuraLink DL-02 — Fuel Level Monitor</strong>
+</div>
+
+<!-- ═══ LAYOUT ════════════════════════════════════════════════════════════ -->
+<div id="layout">
+
+  <!-- ─── SIDEBAR ──────────────────────────────────────────────────────── -->
+  <aside id="sidebar">
+    <h3>Contents</h3>
+    <ul>
+      <li><a href="#overview">1. Overview</a></li>
+      <li><a href="#features">2. Key Features</a></li>
+      <li><a href="#setup">3. First-Time Setup</a></li>
+      <li><a href="#portal">4. Web Interface</a></li>
+      <li class="sub"><a href="#portal-monitor">↳ Monitor Tab</a></li>
+      <li class="sub"><a href="#portal-settings">↳ Settings Tab</a></li>
+      <li class="sub"><a href="#portal-calibration">↳ Calibration Tab</a></li>
+      <li class="sub"><a href="#portal-system">↳ System Tab</a></li>
+      <li><a href="#onewire">5. Tracker Configuration</a></li>
+      <li><a href="#calibration">6. Calibration Guide</a></li>
+      <li><a href="#filter">7. Signal Smoothing</a></li>
+      <li><a href="#ota">8. Firmware Update</a></li>
+      <li><a href="#factory-reset">9. Factory Reset</a></li>
+      <li><a href="#troubleshooting">10. Troubleshooting</a></li>
+      <li><a href="#specs">11. Specifications</a></li>
+    </ul>
+  </aside>
+
+  <!-- ─── MAIN CONTENT ─────────────────────────────────────────────────── -->
+  <main id="content">
+
+    <!-- PRODUCT HEADER -->
+    <div class="product-header">
+      <div class="product-logo">
+        <img src="logo.png" alt="DuraLink DL-02">
+      </div>
+      <div class="product-info">
+        <h1>DuraLink DL-02</h1>
+        <div class="subtitle">Wireless Fuel Level Monitor for Teltonika GPS Trackers — User Manual</div>
+        <div class="product-tags">
+          <span class="tag green">FMC125</span>
+          <span class="tag green">FMC650</span>
+          <span class="tag">1-Wire DS18B20</span>
+          <span class="tag gray">WiFi</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 1. OVERVIEW ══════════════════════════════════════════════════ -->
+    <h2 id="overview">1. Overview</h2>
+    <p>
+      The <strong>DuraLink DL-02</strong> reads fuel level from your vehicle's analog fuel sender and
+      makes that data available to your GPS tracker over a standard 1-Wire connection.
+      It appears to the tracker as three DS18B20 temperature sensors — one reporting liters,
+      one reporting voltage, and one reporting fill percentage — with no additional hardware adapters required.
+    </p>
+    <p>
+      All configuration is done wirelessly through a built-in web interface accessible from any
+      smartphone or laptop browser. No software installation or laptop cable is needed in the field.
+    </p>
+    <div class="callout info">
+      <strong>Compatible Trackers</strong>
+      DuraLink DL-02 is designed to work with the <strong>Teltonika FMC125</strong> and <strong>FMC650</strong> GPS trackers,
+      as well as any other device that supports DS18B20 1-Wire temperature sensors.
+    </div>
+
+    <!-- ══ 2. KEY FEATURES ══════════════════════════════════════════════ -->
+    <h2 id="features">2. Key Features</h2>
+    <table class="feature-table">
+      <tbody>
+        <tr><td>Fuel Level Monitoring</td><td>Reads your vehicle's standard analog resistive fuel sender and converts it to an accurate fuel level reading.</td></tr>
+        <tr><td>3 Live Sensor Values</td><td>Broadcasts fuel in liters, fill percentage, and raw voltage simultaneously on a single 1-Wire bus.</td></tr>
+        <tr><td>Custom Calibration</td><td>Calibrate to your specific tank and fuel sender with as few as 2 measurements. More points give higher accuracy.</td></tr>
+        <tr><td>Mobile-Friendly Web UI</td><td>Configure and monitor from any phone browser. No app download or software installation required.</td></tr>
+        <tr><td>Signal Smoothing</td><td>Built-in smoothing presets prevent fuel sloshing and road vibration from causing erratic readings.</td></tr>
+        <tr><td>Settings Always Saved</td><td>Calibration, tank capacity, and all settings are retained through power cuts and firmware updates.</td></tr>
+        <tr><td>Wireless Firmware Updates</td><td>Update the device firmware from your browser — no USB cable or on-site technician required.</td></tr>
+        <tr><td>Ready-to-Use Tracker IDs</td><td>Sensor IDs are shown in the exact format used by Teltonika Configurator — just copy and paste.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ══ 3. FIRST-TIME SETUP ══════════════════════════════════════════ -->
+    <h2 id="setup">3. First-Time Setup</h2>
+    <div style="background:#f8fafc; border:1px solid #d0dcea; border-radius:4px; padding:20px 24px; margin-bottom:20px;">
+      <h4 style="margin-top:0; color:#1a4a8a; font-size:14px;">1. Power on the device</h4>
+      <p>Apply power. The DL-02 starts up and broadcasts its WiFi hotspot within a few seconds.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Connect to the DL-02 hotspot</h4>
+      <p>On your phone or laptop, open WiFi settings and connect to:</p>
+      <table class="wikitable" style="width:auto; margin-top:8px;">
+        <tr><th>Network Name (SSID)</th><td><code>DL02-XXYY</code> <em>(last 2 characters of the device's MAC address — unique per unit)</em></td></tr>
+        <tr><th>Password</th><td><code>duraconfig</code></td></tr>
+      </table>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Open the web interface</h4>
+      <p>Open any browser and go to: <strong><code>http://192.168.4.1</code></strong></p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Set your tank capacity</h4>
+      <p>Go to the <strong>Settings</strong> tab → enter your tank capacity in liters → tap <strong>Save</strong>.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">5. Calibrate the fuel sender</h4>
+      <p>Go to the <strong>Calibration</strong> tab and follow the calibration procedure in <a href="#calibration">Section 6</a>. At least 2 measurements are required.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">6. Configure your GPS tracker</h4>
+      <p style="margin-bottom:0;">Enter the sensor IDs from the <strong>Monitor</strong> tab into your Teltonika Configurator. See <a href="#onewire">Section 5</a> for details.</p>
+    </div>
+    <div class="callout success">
+      <strong>Tip</strong>
+      The web interface is always available at <code>http://192.168.4.1</code> as long as you are connected to the DL-02 hotspot.
+      You can adjust settings at any time without interrupting the tracker connection.
+    </div>
+
+    <!-- ══ 4. WEB INTERFACE ══════════════════════════════════════════════ -->
+    <h2 id="portal">4. Web Interface</h2>
+    <p>
+      Open <strong><code>http://192.168.4.1</code></strong> in your browser while connected to the <code>DL02-XXYY</code> hotspot.
+      The interface has four tabs at the bottom of the screen.
+    </p>
+
+    <h3 id="portal-monitor">4.1 Monitor Tab</h3>
+    <p>Shows live readings, updated automatically every 2 seconds:</p>
+    <table class="wikitable plain">
+      <thead><tr><th>Display</th><th>What it shows</th></tr></thead>
+      <tbody>
+        <tr><td>Liters</td><td>Calculated fuel level in liters based on your calibration.</td></tr>
+        <tr><td>Percent %</td><td>Fill level as a percentage of your configured tank capacity.</td></tr>
+        <tr><td>Raw Voltage</td><td>The voltage reading directly from the fuel sender (before smoothing).</td></tr>
+        <tr><td>Filtered Voltage</td><td>The smoothed voltage used for the fuel calculation.</td></tr>
+        <tr><td>1-Wire Sensor IDs</td><td>The three sensor addresses in Teltonika format — ready to copy into your tracker configurator.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="portal-settings">4.2 Settings Tab</h3>
+    <table class="wikitable plain">
+      <thead><tr><th>Setting</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Tank Capacity (L)</td><td>The total capacity of your fuel tank in liters. This is used to calculate the fill percentage shown on the Monitor tab.</td></tr>
+        <tr><td>Smoothing Level</td><td>Controls how much the reading is stabilised against vibration and sloshing. See <a href="#filter">Section 7</a>.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="portal-calibration">4.3 Calibration Tab</h3>
+    <table class="wikitable plain">
+      <thead><tr><th>Control</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Calibration Points table</td><td>The list of liters/voltage pairs you have recorded.</td></tr>
+        <tr><td>+ Add Point</td><td>Add a new row to the table.</td></tr>
+        <tr><td>⊙ Capture button</td><td>Automatically records the current voltage reading — no manual measurement required.</td></tr>
+        <tr><td>✕ Remove</td><td>Delete a row from the calibration table.</td></tr>
+        <tr><td>Clear All</td><td>Erase all calibration data.</td></tr>
+        <tr><td>Calculate Polynomial</td><td>Computes the fuel curve from your measurements and saves it to the device.</td></tr>
+        <tr><td>↓ Export</td><td>Download a backup of your calibration data as a file.</td></tr>
+        <tr><td>↑ Import</td><td>Restore calibration from a previously saved backup file.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="portal-system">4.4 System Tab</h3>
+    <table class="wikitable plain">
+      <thead><tr><th>Section</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>WiFi Access Point</td><td>View the device network name and change the hotspot password. The device restarts after saving.</td></tr>
+        <tr><td>Diagnostics</td><td>Device uptime, memory status, and 1-Wire bus activity — useful for support purposes.</td></tr>
+        <tr><td>Firmware Update (OTA)</td><td>Upload a firmware update file provided by your supplier. See <a href="#ota">Section 8</a>.</td></tr>
+        <tr><td>Reboot Device</td><td>Restart the device remotely.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ══ 5. TRACKER CONFIGURATION ════════════════════════════════════ -->
+    <h2 id="onewire">5. Tracker Configuration</h2>
+    <p>
+      The DL-02 broadcasts three sensor values on the 1-Wire bus. You need to add these sensor IDs
+      to your Teltonika Configurator so the tracker knows which data belongs to which channel.
+    </p>
+    <p>
+      The IDs are shown live on the <strong>Monitor tab</strong> of the web interface.
+      Copy them directly from there and paste into your Teltonika Configurator
+      (1-Wire → 1-Wire Data Source → Sensor ID field).
+    </p>
+    <div class="sensor-grid">
+      <div class="sensor-card">
+        <div class="sc-num">Sensor 1 — Fuel Level</div>
+        <div class="sc-id">0x0601DA18B2000028</div>
+        <div class="sc-data">Reports fuel level in liters.<br>Example: value 45.3 = 45.3 liters</div>
+      </div>
+      <div class="sensor-card">
+        <div class="sc-num">Sensor 2 — Voltage Reference</div>
+        <div class="sc-id">0xE402DA18B2000028</div>
+        <div class="sc-data">Reports the raw fuel sender voltage × 10.<br>Example: value 23.5 = 2.35 V</div>
+      </div>
+      <div class="sensor-card">
+        <div class="sc-num">Sensor 3 — Fill Percent</div>
+        <div class="sc-id">0xC303DA18B2000028</div>
+        <div class="sc-data">Reports fill level as a percentage.<br>Example: value 75.0 = 75% full</div>
+      </div>
+    </div>
+    <div class="callout info">
+      <strong>IDs are always shown in the web interface</strong>
+      Open the Monitor tab in the DL-02 web interface at any time to see these IDs in the exact format required by the Teltonika Configurator.
+    </div>
+
+    <!-- ══ 6. CALIBRATION GUIDE ═════════════════════════════════════════ -->
+    <h2 id="calibration">6. Calibration Guide</h2>
+    <p>
+      Calibration teaches the DL-02 how the voltage from your fuel sender corresponds to actual fuel
+      levels in your tank. The more measurement points you provide, the more accurate the result.
+      A minimum of 2 points is required; 4 or more is recommended.
+    </p>
+
+    <h3>Calibration Procedure</h3>
+    <div style="background:#f8fafc; border:1px solid #d0dcea; border-radius:4px; padding:20px 24px; margin-bottom:20px;">
+      <h4 style="margin-top:0; color:#1a4a8a; font-size:14px;">1. Start with a known fuel level</h4>
+      <p>Begin with your tank at a known level — empty, or a specific number of liters you can measure accurately.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Open the Calibration tab</h4>
+      <p>In the web interface at <code>http://192.168.4.1</code>, tap the <strong>Calibration</strong> tab.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Add a point</h4>
+      <p>Tap <strong>+ Add Point</strong>. Enter the current fuel level in liters in the Liters column. Then tap the <strong>⊙ Capture</strong> button — this automatically records the current voltage for you.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Add fuel and repeat</h4>
+      <p>Add fuel to a new known level. Wait a few seconds for the reading to settle, then repeat Step 3. Aim for at least 4 points — for example: empty, quarter, half, three-quarter, and full.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">5. Calculate</h4>
+      <p>Once all points are entered, tap <strong>Calculate Polynomial</strong>. The device computes the fuel curve and saves it automatically.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">6. Verify</h4>
+      <p style="margin-bottom:0;">Check the Monitor tab to confirm the Liters reading matches your actual fuel level. Add more points and recalculate if needed.</p>
+    </div>
+
+    <div class="callout success">
+      <strong>Back up your calibration</strong>
+      Use the <strong>↓ Export</strong> button to save a backup file after calibrating.
+      You can restore it later using <strong>↑ Import</strong> — useful after a factory reset or when setting up a replacement unit.
+    </div>
+    <div class="callout warning">
+      <strong>Take readings on level ground</strong>
+      Always record calibration points with the vehicle parked on level ground.
+      Tilted vehicles will give inaccurate voltage readings due to fuel sloshing to one side of the tank.
+    </div>
+
+    <!-- ══ 7. SIGNAL SMOOTHING ══════════════════════════════════════════ -->
+    <h2 id="filter">7. Signal Smoothing</h2>
+    <p>
+      Road vibration and fuel sloshing can cause the fuel reading to fluctuate even when the actual level
+      is stable. The DL-02 includes a smoothing feature that stabilises the reading. You can choose the
+      level of smoothing in the <strong>Settings</strong> tab.
+    </p>
+    <table class="wikitable">
+      <thead><tr><th>Level</th><th>Behaviour</th><th>Best For</th></tr></thead>
+      <tbody>
+        <tr><td><strong>None</strong></td><td>No smoothing — raw reading displayed</td><td>Testing or when sloshing is not a concern</td></tr>
+        <tr><td><strong>Responsive</strong></td><td>Light smoothing, reacts quickly to fuel changes</td><td>Calm roads, low vibration environments</td></tr>
+        <tr><td><strong>Balanced</strong> <em>(default)</em></td><td>Moderate smoothing — good all-around choice</td><td>Most vehicles and road conditions</td></tr>
+        <tr><td><strong>Stable</strong></td><td>Heavy smoothing, very steady reading</td><td>Off-road, rough terrain, severe sloshing</td></tr>
+      </tbody>
+    </table>
+    <div class="callout info">
+      <strong>Tip</strong>
+      If your fuel reading is jumping around unexpectedly, try increasing the smoothing level.
+      <strong>Balanced</strong> is the recommended starting point for most installations.
+    </div>
+
+    <!-- ══ 8. OTA FIRMWARE UPDATE ════════════════════════════════════════ -->
+    <h2 id="ota">8. Firmware Update</h2>
+    <p>
+      Firmware updates can be installed wirelessly from the web interface — no cable or site visit required.
+      Your supplier will provide the update file when a new version is available.
+    </p>
+
+    <div style="background:#f8fafc; border:1px solid #d0dcea; border-radius:4px; padding:20px 24px; margin-bottom:20px;">
+      <h4 style="margin-top:0; color:#1a4a8a; font-size:14px;">1. Obtain the update file</h4>
+      <p>Contact your supplier to receive the firmware update file (<code>.bin</code> format).</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Connect to the DL-02 hotspot</h4>
+      <p>Connect to <code>DL02-XXYY</code> and open <code>http://192.168.4.1</code> in your browser.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Go to the System tab</h4>
+      <p>Tap the <strong>System</strong> tab at the bottom of the screen.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Select the update file</h4>
+      <p>Under <em>Firmware Update</em>, tap <strong>Choose File</strong> and select the <code>.bin</code> file provided by your supplier.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">5. Upload and install</h4>
+      <p>Tap <strong>↑ Upload &amp; Flash</strong>. A progress bar shows the status. Do not close the browser or remove power during this step.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">6. Wait for reboot</h4>
+      <p style="margin-bottom:0;">The device reboots automatically after the upload completes. The page reloads on its own.</p>
+    </div>
+
+    <div class="callout danger">
+      <strong>Do not remove power during an update</strong>
+      Never disconnect power while the upload progress bar is running.
+      Interrupting the update may require the device to be returned to your supplier for service.
+    </div>
+    <div class="callout success">
+      <strong>Your calibration is always preserved</strong>
+      All calibration data, tank capacity, and settings are stored separately and are never affected by a firmware update.
+    </div>
+
+    <!-- ══ 9. FACTORY RESET ══════════════════════════════════════════════ -->
+    <h2 id="factory-reset">9. Factory Reset</h2>
+    <p>
+      If you have forgotten the hotspot password, or if the device needs to be returned to its
+      original default settings, you can perform a factory reset using the <strong>BOOT button</strong>
+      on the device.
+    </p>
+
+    <div class="callout danger">
+      <strong>All settings will be erased</strong>
+      A factory reset deletes all saved calibration data, tank capacity, smoothing settings, and the custom hotspot password.
+      You will need to recalibrate the device from scratch afterwards.
+    </div>
+
+    <h3>Reset Procedure</h3>
+    <div style="background:#f8fafc; border:1px solid #d0dcea; border-radius:4px; padding:20px 24px; margin-bottom:20px;">
+      <h4 style="margin-top:0; color:#1a4a8a; font-size:14px;">1. Ensure the device is powered on and running normally</h4>
+      <p>Do not hold the button while connecting power.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Press and hold the BOOT button for 3 seconds</h4>
+      <p>The button is labelled <strong>BOOT</strong> on the device.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Wait for the device to reboot</h4>
+      <p>The device erases all settings and restarts automatically.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Reconnect with the default credentials</h4>
+      <p style="margin-bottom:0;">Use the factory-default hotspot password to reconnect and reconfigure.</p>
+    </div>
+
+    <h3>Default Settings After Reset</h3>
+    <table class="wikitable" style="width:auto;">
+      <thead><tr><th>Setting</th><th>Default Value</th></tr></thead>
+      <tbody>
+        <tr><td>Hotspot Name (SSID)</td><td><code>DL02-XXYY</code> (unique to the device)</td></tr>
+        <tr><td>Hotspot Password</td><td><code>duraconfig</code></td></tr>
+        <tr><td>Web Interface URL</td><td><code>http://192.168.4.1</code></td></tr>
+        <tr><td>Tank Capacity</td><td>100 L</td></tr>
+        <tr><td>Smoothing Level</td><td>Balanced</td></tr>
+        <tr><td>Calibration</td><td>Cleared — recalibration required</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ══ 10. TROUBLESHOOTING ═══════════════════════════════════════════ -->
+    <h2 id="troubleshooting">10. Troubleshooting</h2>
+    <table class="wikitable plain">
+      <thead><tr><th>Problem</th><th>What to Check</th></tr></thead>
+      <tbody>
+        <tr><td>Tracker shows no fuel sensor data</td><td>Confirm the sensor IDs from the Monitor tab are entered correctly in the Teltonika Configurator. Check that the 1-Wire cable is connected properly.</td></tr>
+        <tr><td>Fuel reading shows 0 or is clearly wrong</td><td>The device may not be calibrated yet. Open the Calibration tab and follow the calibration procedure in <a href="#calibration">Section 6</a>.</td></tr>
+        <tr><td>Fuel reading jumps around</td><td>Increase the smoothing level in the Settings tab. Try <strong>Balanced</strong> or <strong>Stable</strong>.</td></tr>
+        <tr><td>Cannot connect to the web interface</td><td>Make sure your phone is connected to the <code>DL02-XXYY</code> WiFi network — not your home or office network. Then open <code>http://192.168.4.1</code>.</td></tr>
+        <tr><td>Forgot the hotspot password</td><td>Perform a factory reset (see <a href="#factory-reset">Section 9</a>). The default password <code>duraconfig</code> will be restored.</td></tr>
+        <tr><td>Firmware update fails or shows an error</td><td>Stay close to the device during the update. Ensure the <code>.bin</code> file was provided by your supplier and has not been renamed or modified.</td></tr>
+        <tr><td>Reading is inaccurate after calibration</td><td>Add more calibration points across the full tank range (empty, quarter, half, three-quarter, full) and recalculate. Always calibrate on level ground.</td></tr>
+        <tr><td>Device appears unresponsive</td><td>Use the <strong>Reboot Device</strong> button in the System tab, or remove and restore power to the device.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ══ 11. SPECIFICATIONS ════════════════════════════════════════════ -->
+    <h2 id="specs">11. Specifications</h2>
+    <table class="spec-table">
+      <tbody>
+        <tr><td>Model</td><td>DuraLink DL-02</td></tr>
+        <tr><td>Compatible Trackers</td><td>Teltonika FMC125, FMC650, and any device with DS18B20 1-Wire input</td></tr>
+        <tr><td>Sensor Outputs</td><td>3 × DS18B20 1-Wire — Fuel Level (L), Voltage Reference, Fill Percent (%)</td></tr>
+        <tr><td>Measurement Range</td><td>0–125 liters (Sensor 1) · 0–100% fill (Sensor 3)</td></tr>
+        <tr><td>Calibration</td><td>Up to 10 points, auto curve-fit. Export/import supported.</td></tr>
+        <tr><td>Signal Smoothing</td><td>4 presets — None, Responsive, Balanced (default), Stable</td></tr>
+        <tr><td>Wireless</td><td>WiFi 802.11 b/g/n, 2.4 GHz</td></tr>
+        <tr><td>Web Interface URL</td><td>http://192.168.4.1</td></tr>
+        <tr><td>Default Hotspot Name</td><td>DL02-XXYY (unique per device — last 2 bytes of MAC address)</td></tr>
+        <tr><td>Default Hotspot Password</td><td>duraconfig</td></tr>
+        <tr><td>Settings Storage</td><td>Retained across power cycles and firmware updates</td></tr>
+        <tr><td>Factory Reset</td><td>BOOT button — hold 3 seconds while device is powered on</td></tr>
+        <tr><td>Firmware Updates</td><td>Wireless (OTA) via browser — no cable required</td></tr>
+      </tbody>
+    </table>
+
+  </main>
+</div>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════════════════════ -->
+<div id="footer">
+  <p>
+    <strong>DuraLink DL-02</strong> Fuel Level Monitor &nbsp;|&nbsp; User Manual &nbsp;|&nbsp;
+    &copy; 2026 <strong>Maruko Dura Solusi</strong>
+  </p>
+  <p style="margin-top:6px;">
+    Technical support: <a href="mailto:support@maruko.co.id">support@maruko.co.id</a>
+  </p>
+</div>
+
+<!-- ═══ SIDEBAR ACTIVE STATE ═════════════════════════════════════════════ -->
+<script>
+  const sections = document.querySelectorAll('h2[id], h3[id]');
+  const links    = document.querySelectorAll('#sidebar a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`#sidebar a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

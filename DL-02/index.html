@@ -209,8 +209,8 @@
 
 <!-- ═══ BREADCRUMB ════════════════════════════════════════════════════════ -->
 <div id="breadcrumb">
-  <a href="#">Maruko Dura Solusi</a><span>›</span>
-  <a href="#">Products</a><span>›</span>
+  <a href="../index.html">Maruko Dura Solusi</a><span>›</span>
+  <a href="../index.html">Products</a><span>›</span>
   <strong>DuraLink DL-02 — Fuel Level Monitor</strong>
 </div>
 
@@ -224,6 +224,7 @@
       <li><a href="#overview">1. Overview</a></li>
       <li><a href="#features">2. Key Features</a></li>
       <li><a href="#setup">3. First-Time Setup</a></li>
+      <li class="sub"><a href="#wiring">↳ Wiring Diagram</a></li>
       <li><a href="#portal">4. Web Interface</a></li>
       <li class="sub"><a href="#portal-monitor">↳ Monitor Tab</a></li>
       <li class="sub"><a href="#portal-settings">↳ Settings Tab</a></li>
@@ -236,6 +237,7 @@
       <li><a href="#factory-reset">9. Factory Reset</a></li>
       <li><a href="#troubleshooting">10. Troubleshooting</a></li>
       <li><a href="#specs">11. Specifications</a></li>
+      <li><a href="#changelog">12. Firmware Changelog</a></li>
     </ul>
   </aside>
 
@@ -293,6 +295,15 @@
 
     <!-- ══ 3. FIRST-TIME SETUP ══════════════════════════════════════════ -->
     <h2 id="setup">3. First-Time Setup</h2>
+    
+    <h3 id="wiring" style="font-size: 15px; color: #1a4a8a; border-bottom: 1px solid #e0e8f0; padding-bottom: 4px; margin: 22px 0 10px;">3.1 Wiring Diagram</h3>
+    <div style="background:#f8fafc; border:1px dashed #a0aec0; border-radius:4px; padding:40px; text-align:center; margin-bottom:28px;">
+      <!-- @USER: ADD YOUR WIRING DIAGRAM IMAGE HERE -->
+      <p style="color:#64748b; font-size:16px; font-weight:500;">[ Insert Wiring Diagram Picture Here ]</p>
+      <p style="color:#94a3b8; font-size:13px; margin-top:8px;">Replace this box with an &lt;img&gt; tag pointing to your wiring diagram.</p>
+    </div>
+
+    <h3 style="font-size: 15px; color: #1a4a8a; border-bottom: 1px solid #e0e8f0; padding-bottom: 4px; margin: 22px 0 10px;">3.2 Configuration Steps</h3>
     <div style="background:#f8fafc; border:1px solid #d0dcea; border-radius:4px; padding:20px 24px; margin-bottom:20px;">
       <h4 style="margin-top:0; color:#1a4a8a; font-size:14px;">1. Power on the device</h4>
       <p>Apply power. The DL-02 starts up and broadcasts its WiFi hotspot within a few seconds.</p>
@@ -597,6 +608,43 @@
         <tr><td>Firmware Updates</td><td>Wireless (OTA) via browser with rollback protection</td></tr>
       </tbody>
     </table>
+
+    <!-- ══ 12. CHANGELOG ═════════════════════════════════════════════════ -->
+    <h2 id="changelog">12. Firmware Changelog</h2>
+    
+    <div style="margin-bottom: 20px;">
+      <h3 style="margin-top: 0; padding-bottom: 4px; border-bottom: 1px solid #e0e8f0; color: #1a4a8a; font-size: 15px;">v1.3.0</h3>
+      <ul style="margin-left: 20px; color: #333; line-height: 1.6; font-size: 13px;">
+        <li><strong>New:</strong> Wireless OTA (Over-The-Air) firmware update via the web interface.</li>
+        <li><strong>Fix:</strong> Resolved an issue where 1-Wire data could pause while a user was configuring the device via WiFi.</li>
+        <li><strong>New:</strong> Added diagnostic tools to the System tab for troubleshooting 1-Wire connections.</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h3 style="margin-top: 0; padding-bottom: 4px; border-bottom: 1px solid #e0e8f0; color: #1a4a8a; font-size: 15px;">v1.2.0</h3>
+      <ul style="margin-left: 20px; color: #333; line-height: 1.6; font-size: 13px;">
+        <li><strong>Product Renamed:</strong> Now officially DuraLink DL-02.</li>
+        <li><strong>Security:</strong> Hotspot name is now unique per device (e.g. <code>DL02-XXYY</code>).</li>
+        <li><strong>New:</strong> Simple filter mode added with presets (Responsive, Balanced, Stable).</li>
+        <li><strong>UI Redesign:</strong> Completely new dark-themed, mobile-friendly interface with tabbed navigation.</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h3 style="margin-top: 0; padding-bottom: 4px; border-bottom: 1px solid #e0e8f0; color: #1a4a8a; font-size: 15px;">v1.1.0</h3>
+      <ul style="margin-left: 20px; color: #333; line-height: 1.6; font-size: 13px;">
+        <li><strong>New:</strong> Added a 3rd sensor channel to broadcast fuel fill percentage (0–100%).</li>
+        <li><strong>New:</strong> Added advanced, selectable filtering algorithms (SMA, EMA, Median, Kalman) for heavy sloshing environments.</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h3 style="margin-top: 0; padding-bottom: 4px; border-bottom: 1px solid #e0e8f0; color: #1a4a8a; font-size: 15px;">v1.0.0</h3>
+      <ul style="margin-left: 20px; color: #333; line-height: 1.6; font-size: 13px;">
+        <li>Initial release featuring liters and raw voltage outputs.</li>
+      </ul>
+    </div>
 
   </main>
 </div>

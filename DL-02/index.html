@@ -251,8 +251,7 @@
         <h1>DuraLink DL-02</h1>
         <div class="subtitle">Wireless Fuel Level Monitor for Teltonika GPS Trackers — User Manual</div>
         <div class="product-tags">
-          <span class="tag green">FMC125</span>
-          <span class="tag green">FMC650</span>
+          <span class="tag green">Any Teltonika 1-Wire Device</span>
           <span class="tag">1-Wire DS18B20</span>
           <span class="tag gray">WiFi</span>
         </div>
@@ -273,7 +272,7 @@
     </p>
     <div class="callout info">
       <strong>Compatible Trackers</strong>
-      DuraLink DL-02 is designed to work with the <strong>Teltonika FMC125</strong> and <strong>FMC650</strong> GPS trackers,
+      DuraLink DL-02 is designed to work with <strong>any Teltonika Telematics devices with a 1-wire interface</strong>,
       as well as any other device that supports DS18B20 1-Wire temperature sensors.
     </div>
 
@@ -281,14 +280,14 @@
     <h2 id="features">2. Key Features</h2>
     <table class="feature-table">
       <tbody>
-        <tr><td>Fuel Level Monitoring</td><td>Reads your vehicle's standard analog resistive fuel sender and converts it to an accurate fuel level reading.</td></tr>
-        <tr><td>3 Live Sensor Values</td><td>Broadcasts fuel in liters, fill percentage, and raw voltage simultaneously on a single 1-Wire bus.</td></tr>
-        <tr><td>Custom Calibration</td><td>Calibrate to your specific tank and fuel sender with as few as 2 measurements. More points give higher accuracy.</td></tr>
-        <tr><td>Mobile-Friendly Web UI</td><td>Configure and monitor from any phone browser. No app download or software installation required.</td></tr>
-        <tr><td>Signal Smoothing</td><td>Built-in smoothing presets prevent fuel sloshing and road vibration from causing erratic readings.</td></tr>
-        <tr><td>Settings Always Saved</td><td>Calibration, tank capacity, and all settings are retained through power cuts and firmware updates.</td></tr>
-        <tr><td>Wireless Firmware Updates</td><td>Update the device firmware from your browser — no USB cable or on-site technician required.</td></tr>
-        <tr><td>Ready-to-Use Tracker IDs</td><td>Sensor IDs are shown in the exact format used by Teltonika Configurator — just copy and paste.</td></tr>
+        <tr><td>Dual-Core Architecture</td><td>1-Wire polling on Core 1 ensures continuous operation, while user tasks run on Core 0.</td></tr>
+        <tr><td>ADS1115 ADC</td><td>16-bit precision provides highly accurate fuel level voltage readings.</td></tr>
+        <tr><td>Polynomial Calibration</td><td>Uses Teltonika-style cubic polynomial (voltage → liters) for exact fuel curve mapping.</td></tr>
+        <tr><td>3 Live Sensor Values</td><td>Broadcasts fuel in liters, fill percentage, and raw voltage simultaneously via emulated DS18B20.</td></tr>
+        <tr><td>Advanced Signal Smoothing</td><td>Configurable Simple (Responsive/Balanced/Stable) and Advanced (SMA/EMA/Median/Kalman) filters.</td></tr>
+        <tr><td>NVS Storage</td><td>Calibration, filter settings, and WiFi credentials persist across reboots and power cycles.</td></tr>
+        <tr><td>Wireless OTA Updates</td><td>Flash new firmware wirelessly via the web UI with built-in rollback protection.</td></tr>
+        <tr><td>Watchdog Timer</td><td>Built-in 10-second timeout automatically restarts the device if a task hangs.</td></tr>
       </tbody>
     </table>
 
@@ -454,23 +453,33 @@
     <!-- ══ 7. SIGNAL SMOOTHING ══════════════════════════════════════════ -->
     <h2 id="filter">7. Signal Smoothing</h2>
     <p>
-      Road vibration and fuel sloshing can cause the fuel reading to fluctuate even when the actual level
-      is stable. The DL-02 includes a smoothing feature that stabilises the reading. You can choose the
-      level of smoothing in the <strong>Settings</strong> tab.
+      Road vibration and fuel sloshing can cause the fuel reading to fluctuate. The DL-02 includes 
+      powerful filtering algorithms to stabilise the reading. You can configure this in the <strong>Settings</strong> tab.
     </p>
+
+    <h3>Simple Mode (Default)</h3>
     <table class="wikitable">
-      <thead><tr><th>Level</th><th>Behaviour</th><th>Best For</th></tr></thead>
+      <thead><tr><th>Preset</th><th>Best For</th></tr></thead>
       <tbody>
-        <tr><td><strong>None</strong></td><td>No smoothing — raw reading displayed</td><td>Testing or when sloshing is not a concern</td></tr>
-        <tr><td><strong>Responsive</strong></td><td>Light smoothing, reacts quickly to fuel changes</td><td>Calm roads, low vibration environments</td></tr>
-        <tr><td><strong>Balanced</strong> <em>(default)</em></td><td>Moderate smoothing — good all-around choice</td><td>Most vehicles and road conditions</td></tr>
-        <tr><td><strong>Stable</strong></td><td>Heavy smoothing, very steady reading</td><td>Off-road, rough terrain, severe sloshing</td></tr>
+        <tr><td><strong>Responsive</strong></td><td>Calm roads, fast changes, low vibration environments</td></tr>
+        <tr><td><strong>Balanced</strong></td><td>Most vehicles and standard road conditions (Default)</td></tr>
+        <tr><td><strong>Stable</strong></td><td>Heavy vibration, off-road driving, or rough terrain</td></tr>
       </tbody>
     </table>
+
+    <h3 style="margin-top:20px;">Advanced Mode</h3>
+    <p>For complex installations, you can select and tune the underlying filter manually:</p>
+    <ul style="margin-left: 20px; margin-bottom: 20px; color:#333; line-height:1.6;">
+      <li><strong>SMA (Simple Moving Average):</strong> Averages the last N readings.</li>
+      <li><strong>EMA (Exponential Moving Average):</strong> Applies more weight to recent samples based on tuning factor alpha.</li>
+      <li><strong>Median:</strong> Takes the middle value to eliminate spike outliers completely.</li>
+      <li><strong>Kalman Filter:</strong> A recursive filter modelling system change rate and sensor noise.</li>
+    </ul>
+
     <div class="callout info">
       <strong>Tip</strong>
-      If your fuel reading is jumping around unexpectedly, try increasing the smoothing level.
-      <strong>Balanced</strong> is the recommended starting point for most installations.
+      If your fuel reading is jumping around unexpectedly, switch to <strong>Simple: Stable</strong>. 
+      For occasional voltage spikes, try <strong>Advanced: Median</strong>.
     </div>
 
     <!-- ══ 8. OTA FIRMWARE UPDATE ════════════════════════════════════════ -->
@@ -573,18 +582,19 @@
     <table class="spec-table">
       <tbody>
         <tr><td>Model</td><td>DuraLink DL-02</td></tr>
-        <tr><td>Compatible Trackers</td><td>Teltonika FMC125, FMC650, and any device with DS18B20 1-Wire input</td></tr>
+        <tr><td>Firmware Version</td><td>v1.3.0</td></tr>
+        <tr><td>Compatible Trackers</td><td>Any Teltonika Telematics devices with a 1-wire interface</td></tr>
         <tr><td>Sensor Outputs</td><td>3 × DS18B20 1-Wire — Fuel Level (L), Voltage Reference, Fill Percent (%)</td></tr>
         <tr><td>Measurement Range</td><td>0–125 liters (Sensor 1) · 0–100% fill (Sensor 3)</td></tr>
-        <tr><td>Calibration</td><td>Up to 10 points, auto curve-fit. Export/import supported.</td></tr>
-        <tr><td>Signal Smoothing</td><td>4 presets — None, Responsive, Balanced (default), Stable</td></tr>
+        <tr><td>Calibration</td><td>Up to 10 points, cubic polynomial curve-fit. Export/import supported.</td></tr>
+        <tr><td>Signal Smoothing</td><td>Simple (Responsive/Balanced/Stable) or Advanced (SMA/EMA/Median/Kalman)</td></tr>
         <tr><td>Wireless</td><td>WiFi 802.11 b/g/n, 2.4 GHz</td></tr>
         <tr><td>Web Interface URL</td><td>http://192.168.4.1</td></tr>
         <tr><td>Default Hotspot Name</td><td>DL02-XXYY (unique per device — last 2 bytes of MAC address)</td></tr>
         <tr><td>Default Hotspot Password</td><td>duraconfig</td></tr>
-        <tr><td>Settings Storage</td><td>Retained across power cycles and firmware updates</td></tr>
+        <tr><td>Settings Storage</td><td>NVS (Retained across power cycles and firmware updates)</td></tr>
         <tr><td>Factory Reset</td><td>BOOT button — hold 3 seconds while device is powered on</td></tr>
-        <tr><td>Firmware Updates</td><td>Wireless (OTA) via browser — no cable required</td></tr>
+        <tr><td>Firmware Updates</td><td>Wireless (OTA) via browser with rollback protection</td></tr>
       </tbody>
     </table>
 

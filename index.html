@@ -1,245 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maruko Dura Solusi - Product Documentation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Reset & Base */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      color: #e2e8f0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    /* Header */
-    header {
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    .logo img {
-      height: 40px;
-      width: auto;
-    }
-    
-    /* Main Content */
-    main {
-      flex: 1;
-      padding: 60px 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .hero {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-    .hero h1 {
-      font-size: 42px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-    }
-    .hero p {
-      font-size: 18px;
-      color: #94a3b8;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-    
-    /* Product Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
-    }
-    
-    .card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 30px;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #3b82f6, #06b6d4);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    
-    .card:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    }
-    
-    .card:hover::before {
-      opacity: 1;
-    }
-    
-    .card-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 12px;
-      background: rgba(59, 130, 246, 0.1);
-      color: #3b82f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 24px;
-      border: 1px solid rgba(59, 130, 246, 0.2);
-    }
-    
-    .card h2 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 12px;
-    }
-    
-    .card p {
-      font-size: 15px;
-      color: #94a3b8;
-      line-height: 1.6;
-      margin-bottom: 24px;
-      flex: 1;
-    }
-    
-    .card-action {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #3b82f6;
-      font-weight: 500;
-      font-size: 14px;
-    }
-    
-    .card-action svg {
-      width: 16px;
-      height: 16px;
-      transition: transform 0.2s ease;
-    }
-    
-    .card:hover .card-action svg {
-      transform: translateX(4px);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maruko Dura Solusi - Product Documentation</title>
+<style>
+  /* ══ Reset & Base ════════════════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    color: #202122;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 30px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      color: #64748b;
-      font-size: 14px;
-      margin-top: auto;
-    }
-    
-    footer a {
-      color: #94a3b8;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    
-    footer a:hover {
-      color: #fff;
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-      header { padding: 15px 20px; }
-      .hero h1 { font-size: 32px; }
-      main { padding: 40px 20px; }
-    }
-  </style>
+  /* ══ Top Bar ═════════════════════════════════════════════════════════ */
+  #topbar {
+    background: #000;
+    border-bottom: 2px solid #1a4a8a;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  }
+  #topbar .logo-wrap { display: flex; align-items: center; gap: 12px; }
+  #topbar .logo-wrap img { height: 32px; width: auto; }
+  
+  /* ══ Layout ══════════════════════════════════════════════════════════ */
+  #layout {
+    display: flex;
+    flex: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    flex-direction: column;
+    padding: 40px 20px;
+  }
+
+  /* ══ Typography & Elements ═══════════════════════════════════════════ */
+  h1 {
+    font-size: 28px;
+    color: #1a4a8a;
+    border-bottom: 1px solid #d0dcea;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  p.intro {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 30px;
+  }
+
+  .device-card {
+    background: #f8fafc;
+    border: 1px solid #c8d8e8;
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .device-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-color: #1a4a8a;
+  }
+
+  .device-card h2 {
+    font-size: 20px;
+    color: #1a4a8a;
+    margin: 0;
+  }
+
+  .device-card p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .device-card .btn {
+    display: inline-block;
+    background: #1a4a8a;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: 600;
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+
+  .device-card:hover .btn {
+    background: #11366b;
+  }
+
+  /* ══ Footer ══════════════════════════════════════════════════════════ */
+  #footer {
+    background: #1a2a40; color: #8a9db5;
+    text-align: center; padding: 24px;
+    font-size: 12px; margin-top: auto;
+  }
+  #footer a { color: #90c0e0; text-decoration: none; }
+</style>
 </head>
 <body>
 
-  <header>
-    <div class="logo">
-      <img src="logo.png" alt="DuraLink Logo">
+  <!-- TOP BAR -->
+  <header id="topbar">
+    <div class="logo-wrap">
+      <img src="logo.png" alt="Maruko Logo">
     </div>
   </header>
 
-  <main>
-    <div class="hero">
-      <h1>DuraLink Documentation Hub</h1>
-      <p>Select your device below to access comprehensive user manuals, setup guides, and troubleshooting resources.</p>
-    </div>
+  <div id="layout">
+    <h1>DuraLink Documentation Hub</h1>
+    <p class="intro">Welcome to the DuraLink documentation portal. Select your device below to view the full user manual, configuration steps, and wiring diagrams.</p>
 
-    <div class="grid">
-      <!-- DL-01 Card -->
-      <a href="DL-01/index.html" class="card">
-        <div class="card-icon">
-          <!-- Gateway Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/>
-          </svg>
-        </div>
-        <h2>DL-01 Gateway</h2>
-        <p>RS232-to-WiFi telemetry bridge. Receives data from Teltonika trackers over RS232 and forwards it to your MQTT or Codec 8E server via WiFi.</p>
-        <div class="card-action">
-          View Manual
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </div>
-      </a>
+    <!-- DL-01 Card -->
+    <a href="DL-01/index.html" class="device-card">
+      <h2>DuraLink DL-01 Gateway</h2>
+      <p>RS232-to-WiFi telemetry bridge. Receives data from Teltonika trackers over RS232 and forwards it to your MQTT or Codec 8E server via WiFi.</p>
+      <span class="btn">View DL-01 Manual</span>
+    </a>
 
-      <!-- DL-02 Card -->
-      <a href="DL-02/index.html" class="card">
-        <div class="card-icon">
-          <!-- Fuel / Sensor Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 22v-8a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v8"/><path d="M11 22h10a2 2 0 0 0 2-2V9.536a2 2 0 0 0-.536-1.366l-5.12-5.58A2 2 0 0 0 15.88 2H13v6"/><path d="M3 22H1"/>
-          </svg>
-        </div>
-        <h2>DL-02 Monitor</h2>
-        <p>Wireless Fuel Level Monitor. Reads analog fuel senders and emulates DS18B20 temperature sensors over a standard 1-Wire bus.</p>
-        <div class="card-action">
-          View Manual
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </div>
-      </a>
-    </div>
-  </main>
+    <!-- DL-02 Card -->
+    <a href="DL-02/index.html" class="device-card">
+      <h2>DuraLink DL-02 Monitor</h2>
+      <p>Wireless Fuel Level Monitor. Reads analog fuel senders and emulates DS18B20 temperature sensors over a standard 1-Wire bus.</p>
+      <span class="btn">View DL-02 Manual</span>
+    </a>
+  </div>
 
-  <footer>
+  <footer id="footer">
     <p>&copy; 2026 Maruko Dura Solusi &nbsp;|&nbsp; <a href="mailto:support@maruko.co.id">support@maruko.co.id</a></p>
   </footer>
 

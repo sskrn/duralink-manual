@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DL-01 RS232-to-WiFi Gateway — User Manual v1.5.2</title>
+<title>DL-01 RS232-to-WiFi Gateway — User Manual v1.5.3</title>
 <style>
   /* ── Reset & Base ─────────────────────────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -341,7 +341,7 @@
         <h1>DL-01 RS232-to-WiFi Gateway</h1>
         <div class="subtitle">Wireless telemetry bridge for Teltonika GPS/telematics trackers &mdash; User Manual</div>
         <div class="product-tags">
-          <span class="tag filled">v1.5.2</span>
+          <span class="tag filled">v1.5.3</span>
           <span class="tag">FMC125</span>
           <span class="tag">FMC650</span>
           <span class="tag">MQTT</span>
@@ -532,7 +532,7 @@
     <p>Remotely restarts DURALINK. Useful after configuration changes that require a restart without a physical site visit.</p>
 
     <h4>Delete All Records</h4>
-    <p>Permanently deletes all records stored on the SD card. This action cannot be undone.</p>
+    <p>Permanently deletes all records stored on the SD card and internal storage. This action cannot be undone.</p>
     <div class="callout danger">
       Only delete records after confirming they have been delivered to your server, or if you intentionally want to discard all buffered data.
     </div>
@@ -726,7 +726,7 @@
     <table class="spec-table">
       <tbody>
         <tr><td>Model</td><td>DL-01 RS232-to-WiFi Gateway</td></tr>
-        <tr><td>Firmware Version</td><td>v1.5.2</td></tr>
+        <tr><td>Firmware Version</td><td>v1.5.3</td></tr>
         <tr><td>Supported Trackers</td><td>Teltonika FMC125, Teltonika FMC650</td></tr>
         <tr><td>Output Protocols</td><td>MQTT (JSON), Teltonika Codec 8 Extended (TCP)</td></tr>
         <tr><td>Wireless Standard</td><td>WiFi 802.11 b/g/n, 2.4 GHz</td></tr>
@@ -751,7 +751,8 @@
     <table class="wikitable kv">
       <thead><tr><th>Version</th><th>Summary</th></tr></thead>
       <tbody>
-        <tr><td><strong>v1.5.2</strong></td><td>Revised manual design; BOOT button factory reset feature added</td></tr>
+        <tr><td><strong>v1.5.3</strong></td><td>"Delete Records" button now clears both SD card and internal fallback storage; enhanced diagnostic messages for flash storage.</td></tr>
+        <tr><td>v1.5.2</td><td>Revised manual design; BOOT button factory reset feature added</td></tr>
         <tr><td>v1.5.1</td><td>Browser-based OTA firmware update (stable dual-slot); improved portal stability</td></tr>
         <tr><td>v1.5.0</td><td>Browser OTA introduced; unique device AP SSID; password show/hide toggle; MAC address display in portal</td></tr>
         <tr><td>v1.3.1</td><td>DURALINK branding; Maintenance tab with remote reboot and SD card wipe</td></tr>
@@ -766,7 +767,7 @@
 
 <!-- ═══ FOOTER ════════════════════════════════════════════════════════════ -->
 <div id="footer">
-  <p><strong>DL-01</strong> RS232-to-WiFi Gateway &nbsp;&mdash;&nbsp; User Manual v1.5.2</p>
+  <p><strong>DL-01</strong> RS232-to-WiFi Gateway &nbsp;&mdash;&nbsp; User Manual v1.5.3</p>
   <p>Copyright &copy; 2026 <strong>Maruko Dura Solusi</strong> &nbsp;&mdash;&nbsp; <a href="mailto:support@maruko.co.id">support@maruko.co.id</a></p>
 </div>
 

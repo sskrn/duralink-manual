@@ -405,6 +405,15 @@
           <tr><td>Byte 6</td><td>Filtered Voltage</td><td>Convert Hex to Decimal, then divide by 10 (volts)</td></tr>
         </tbody>
       </table>
+      
+      <h4 style="margin-top:20px; color:#1a4a8a; font-size:14px;">Example Backend Parsing</h4>
+      <p style="margin-bottom: 8px; font-size: 13px;">If the Teltonika tracker sends AVL ID 78 with the Hex payload: <code>01C54A092E23</code></p>
+      <ul style="font-family: monospace; font-size: 13px; line-height: 1.5; background: #fff; padding: 12px 16px 12px 32px; border: 1px solid #e0e8f0; border-radius: 4px; margin-bottom: 0;">
+        <li><span style="color:#666;">Bytes 1 &amp; 2:</span> 01C5 (Hex) = 453 (Dec) &rarr; 453 / 10 = <strong>45.3 Liters</strong></li>
+        <li><span style="color:#666;">Byte 3:</span> 4A (Hex) = 74 (Dec) &rarr; 74 / 2 = <strong>37.0 % Full</strong></li>
+        <li><span style="color:#666;">Bytes 4 &amp; 5:</span> 092E (Hex) = 2350 (Dec) = <strong>2350 mV</strong> (Raw Analog)</li>
+        <li><span style="color:#666;">Byte 6:</span> 23 (Hex) = 35 (Dec) &rarr; 35 / 10 = <strong>3.5 V</strong> (Filtered Voltage)</li>
+      </ul>
     </div>
 
     <div class="callout info">

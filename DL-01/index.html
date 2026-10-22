@@ -409,7 +409,7 @@
       <tbody>
         <tr><td>Teltonika GPS tracker</td><td>FMC125 or FMC650 with an RS232 port</td></tr>
         <tr><td>RS232 cable</td><td>Between the tracker's RS232 port and DURALINK</td></tr>
-        <tr><td>MicroSD card</td><td>Optional but recommended (FAT32, any capacity). When omitted, built-in internal flash storage buffers records automatically.</td></tr>
+        <tr><td>MicroSD card</td><td>Optional but recommended: up to 32 GB, formatted FAT32 (64 GB and larger cards use exFAT, which is not supported). When omitted, built-in internal flash storage buffers records automatically.</td></tr>
         <tr><td>WiFi network</td><td>With internet access for data delivery and NTP time sync</td></tr>
         <tr><td>Power supply</td><td>9–24 V DC</td></tr>
       </tbody>
@@ -661,11 +661,11 @@
     <table class="wikitable kv" style="margin-top:14px">
       <thead><tr><th>Behaviour</th><th>Detail</th></tr></thead>
       <tbody>
-        <tr><td>Primary storage (MicroSD)</td><td>When an SD card is inserted, records are saved as sequential files (e.g. <code>00000001.jsn</code>). Capable of buffering millions of records.</td></tr>
+        <tr><td>Primary storage (MicroSD)</td><td>When an SD card is inserted, records are saved as sequential files (e.g. <code>00000001.jsn</code>). Holds up to about 65,000 queued records (one FAT32 folder); beyond that, new records go to internal flash.</td></tr>
         <tr><td>Fallback storage (Internal Flash)</td><td>If no SD card is installed, DURALINK automatically buffers records to an internal non-volatile circular flash queue. When full, the oldest records roll over continuously so logging never freezes.</td></tr>
         <tr><td>Delivery Priority</td><td>On connection restore, DURALINK flushes queues in order: <strong>MicroSD card &rarr; Internal Flash &rarr; Live stream</strong>.</td></tr>
         <tr><td>After reboot</td><td>Record sequence numbering resumes from the highest existing file &mdash; no records are skipped or overwritten.</td></tr>
-        <tr><td>On reconnect</td><td>All pending records are delivered in strictly chronological sequence, automatically.</td></tr>
+        <tr><td>On reconnect</td><td>Pending records are delivered automatically, oldest first within each storage queue.</td></tr>
       </tbody>
     </table>
     <div class="callout success">
@@ -757,7 +757,7 @@
         <tr><td>No data appearing on server</td><td>Wrong device mode or tracker not configured correctly</td><td>Verify the Device tab setting matches the connected tracker model. For FMC650, confirm the tracker is set to <em>Rec to LCD</em> output in the Teltonika Configurator.</td></tr>
         <tr><td>Status bar: MQTT/TCP Offline</td><td>Server unreachable or incorrect credentials</td><td>Double-check server address, port, and credentials in the Server tab.</td></tr>
         <tr><td>Status bar: WiFi Offline</td><td>Wrong WiFi password or router out of range</td><td>Re-enter WiFi credentials in the WiFi tab. Confirm the router is reachable and broadcasting.</td></tr>
-        <tr><td>Status bar: SD Not Mounted</td><td>SD card missing or incorrectly formatted</td><td>Reinsert the SD card and ensure it is formatted as FAT32.</td></tr>
+        <tr><td>Status bar: SD Not Mounted</td><td>SD card missing, incorrectly formatted, or larger than 32 GB</td><td>Reinsert the SD card. Use a card of up to 32 GB formatted as FAT32.</td></tr>
         <tr><td>Records accumulating, not sending</td><td>Server connection is offline</td><td>Check Server tab settings. Records will deliver automatically once the connection is restored — no manual action required.</td></tr>
         <tr><td>Timestamps are incorrect</td><td>NTP sync not yet completed</td><td>Confirm the device has internet access via WiFi. DURALINK synchronises time with NTP servers automatically on connection.</td></tr>
         <tr><td>FMC650: no records appear</td><td>FMC650 not set to Rec to LCD mode</td><td>In the Teltonika Configurator, set the FMC650 RS232 data output mode to <strong>Rec to LCD</strong> or <strong>Log Mode</strong>.</td></tr>
@@ -784,7 +784,7 @@
         <tr><td>WiFi Profiles</td><td>Up to 5 (auto-selects strongest signal)</td></tr>
         <tr><td>Domain Name Resolution</td><td>mDNS / Bonjour (http://dl01-&lt;serial&gt;.local; dl01-&lt;MAC&gt;.local on units without a factory serial)</td></tr>
         <tr><td>RS232 Interface</td><td>115200 bps, 8-N-1</td></tr>
-        <tr><td>Local Storage</td><td>MicroSD card (FAT32, any capacity) + Built-in Internal Flash fallback buffer</td></tr>
+        <tr><td>Local Storage</td><td>MicroSD card (up to 32 GB, FAT32) + built-in internal flash fallback buffer</td></tr>
         <tr><td>Time Synchronisation</td><td>Automatic NTP network synchronization via WiFi</td></tr>
         <tr><td>Configuration Interface</td><td>Web browser — no app or software required (gzip-compressed, cached, hotspot recognised as online)</td></tr>
         <tr><td>Configuration URL</td><td>http://192.168.4.1 or http://dl01-&lt;serial&gt;.local</td></tr>

@@ -392,6 +392,7 @@
         <tr><td>Automatic NTP Sync</td><td>Synchronises time with internet NTP servers whenever WiFi is connected, ensuring accurate UTC timestamps.</td></tr>
         <tr><td>Dual OTA Update Methods</td><td>Upgrade firmware directly from the cloud repository with 1-click update, or upload a local <code>.bin</code> file via browser.</td></tr>
         <tr><td>Remote Reboot &amp; Maintenance</td><td>Restart the device remotely or wipe queued records from the portal without a physical site visit.</td></tr>
+        <tr><td>Configuration Backup</td><td>Export all settings to a file and import them on another DL-01 to set up a fleet quickly.</td></tr>
         <tr><td>Factory Reset via BOOT Button</td><td>Hold the physical BOOT button for 5 seconds to restore all settings to factory defaults.</td></tr>
         <tr><td>Permanent Factory Serial Number</td><td>Assigned a permanent 10-digit serial number stored in dedicated secure storage that survives resets and updates.</td></tr>
         <tr><td>Settings Preserved on Update</td><td>WiFi credentials, server settings, and all configuration are retained across firmware updates.</td></tr>
@@ -564,6 +565,20 @@
         <tr><td>Delete All Records</td><td>Permanently deletes all pending records from both the MicroSD card and the internal flash storage fallback queue.</td></tr>
       </tbody>
     </table>
+
+    <h4>Configuration Backup</h4>
+    <p>Copies the settings of one DL-01 to another, for example to set up several devices for the same site.</p>
+    <table class="wikitable kv">
+      <thead><tr><th>Control</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Export Config</td><td>Downloads <code>dl01-config-&lt;serial&gt;.json</code> with the WiFi networks, server settings, tracker settings and hotspot password.</td></tr>
+        <tr><td>Import Config</td><td>Loads an exported file into the form. Review the WiFi, Device and Server tabs, then click <strong>SAVE</strong> to apply. Nothing changes until you save.</td></tr>
+      </tbody>
+    </table>
+    <p>The hotspot name, MQTT client ID and manually entered IMEI are not copied, because each device must keep its own.</p>
+    <div class="callout warning">
+      The exported file contains the WiFi, MQTT and hotspot passwords in plain text. Store and share it as you would the passwords themselves.
+    </div>
 
     <h4>Firmware Update (OTA)</h4>
     <p>DURALINK supports two wireless firmware update pathways directly from the portal:</p>
@@ -803,7 +818,7 @@
     <table class="wikitable kv">
       <thead><tr><th>Version</th><th>Summary</th></tr></thead>
       <tbody>
-        <tr><td><strong>v1.5.8</strong></td><td>Faster, more stable portal (page caching, background network scan and update check); hotspot remembers the router&rsquo;s WiFi channel; phones and laptops treat the hotspot as online; local address <code>http://dl01-&lt;serial&gt;.local</code>; Device Info shows both MAC addresses; SAVE restarts the device automatically and explains rejected settings; cloud update now offers stable releases to pre-release units; FMC650 coordinate precision fix; WPA3-only routers no longer supported</td></tr>
+        <tr><td><strong>v1.5.8</strong></td><td>Faster, more stable portal (page caching, background network scan and update check); hotspot remembers the router&rsquo;s WiFi channel; phones and laptops treat the hotspot as online; local address <code>http://dl01-&lt;serial&gt;.local</code>; Device Info shows both MAC addresses; SAVE restarts the device automatically, reloads the portal when it is back and explains rejected settings; configuration export and import; cloud update now offers stable releases to pre-release units; FMC650 coordinate precision fix; WPA3-only routers no longer supported</td></tr>
         <tr><td>v1.5.7</td><td>mDNS local domain resolution (<code>http://dl01-&lt;MAC&gt;.local</code>); build-time Gzip Web UI compression (~75% bandwidth reduction); persistent HTTP Keep-Alive connections; dual-core task optimization; refined client-friendly RS232 monitor guide</td></tr>
         <tr><td>v1.5.6</td><td>Remote Cloud OTA update integration with live progress polling and automatic reboot</td></tr>
         <tr><td>v1.5.5</td><td>Hardware production alignment; permanent 10-digit factory serial number in dedicated non-volatile storage; updated default hotspot SSID (<code>DL01-XXXX</code>) and password (<code>duraconfig</code>)</td></tr>

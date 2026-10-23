@@ -583,7 +583,7 @@
     <h4>Firmware Update (OTA)</h4>
     <p>DURALINK supports two wireless firmware update pathways directly from the portal:</p>
     <ul class="plain" style="margin-left:16px; margin-bottom:12px;">
-      <li><strong>Remote Cloud Update:</strong> Click <em>Check for Updates</em> to automatically query the cloud server for official releases, then click <em>Download &amp; Install Update</em> to stream and flash wirelessly with live progress.</li>
+      <li><strong>Remote Cloud Update:</strong> Click <em>Check for Updates</em>. The device restarts briefly into <em>update mode</em> and then checks the cloud server for official releases by itself; click <em>Download &amp; Install Update</em> to stream and flash wirelessly with live progress.</li>
       <li><strong>Local File Upload:</strong> Choose a local <code>.bin</code> firmware file from your computer or phone and click <em>Upload &amp; Install</em>.</li>
     </ul>
 
@@ -698,7 +698,8 @@
       <p>Open the portal at <code>http://192.168.4.1</code> or <code>http://dl01-&lt;serial&gt;.local</code> and click the <strong>Maintenance</strong> tab.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Check for updates</h4>
-      <p>Under <em>Remote Cloud Update</em>, click <strong>Check for Updates</strong>. The device contacts the official firmware repository and displays release details.</p>
+      <p>Under <em>Remote Cloud Update</em>, click <strong>Check for Updates</strong>. The device restarts into <strong>update mode</strong> (about 15 seconds) &mdash; stay on the page; it reconnects and checks the official firmware repository by itself, then shows the release details.</p>
+      <div class="callout info">In update mode an amber banner shows the time left. Tracker records are still received and stored, and are sent after the update. The device returns to normal operation by itself: after installing, 30 seconds after an &ldquo;up to date&rdquo; result, or after 10 minutes at most. Use <strong>Return to normal now</strong> to leave earlier.</div>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Install update</h4>
       <p>Click <strong>Download &amp; Install Update</strong>. The device streams the firmware, verifies the image checksum, and updates the inactive flash partition with real-time percentage feedback. The portal stays usable while the update check runs.</p>

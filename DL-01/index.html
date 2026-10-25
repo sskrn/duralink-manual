@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DL-01 RS232-to-WiFi Gateway — User Manual v1.5.7</title>
+<title>DL-01 RS232-to-WiFi Gateway — User Manual v1.5.9</title>
 <style>
   /* ── Reset & Base ─────────────────────────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -282,7 +282,7 @@
 <div id="topbar">
   <div class="logo-wrap">
     <img src="logo.png" alt="DuraLink">
-    <span class="version-badge">v1.5.7</span>
+    <span class="version-badge">v1.5.9</span>
   </div>
   <nav>
     <a href="#overview">Overview</a>
@@ -343,7 +343,7 @@
         <h1>DL-01 RS232-to-WiFi Gateway</h1>
         <div class="subtitle">Wireless telemetry bridge for Teltonika GPS/telematics trackers &mdash; User Manual</div>
         <div class="product-tags">
-          <span class="tag filled">v1.5.7</span>
+          <span class="tag filled">v1.5.9</span>
           <span class="tag">FMC125</span>
           <span class="tag">FMC650</span>
           <span class="tag">MQTT</span>
@@ -365,7 +365,7 @@
     <p>
       Once installed, the device can be fully configured via its built-in Access Point or over your local
       network using either <strong><code>http://192.168.4.1</code></strong> or its unique mDNS domain
-      <strong><code>http://dl01-&lt;MAC&gt;.local/</code></strong>. No special software, mobile app, drivers,
+      <strong><code>http://dl01-&lt;serial&gt;.local/</code></strong>. No special software, mobile app, drivers,
       or cables are required in the field.
     </p>
     <p>
@@ -379,8 +379,10 @@
     <table class="feature-table">
       <tbody>
         <tr><td>Zero-Cable Configuration</td><td>All settings configured wirelessly via web browser. No USB cable needed after initial installation.</td></tr>
-        <tr><td>mDNS Domain Access</td><td>Connect via friendly domain <code>http://dl01-&lt;MAC&gt;.local</code> from any phone or PC without remembering IP addresses.</td></tr>
-        <tr><td>High-Speed Web Portal</td><td>Optimised gzip-compressed portal with persistent HTTP Keep-Alive for near-instant page loading over WiFi.</td></tr>
+        <tr><td>mDNS Domain Access</td><td>Connect via friendly domain <code>http://dl01-&lt;serial&gt;.local</code> from any phone or PC without remembering IP addresses.</td></tr>
+        <tr><td>High-Speed Web Portal</td><td>Optimised gzip-compressed portal with browser caching and persistent connections for near-instant page loading over WiFi. Slow tasks (network scan, update check) run in the background so the page stays responsive.</td></tr>
+        <tr><td>Hotspot Recognised as Online</td><td>Phones and laptops connected to the <code>DL01-XXXX</code> hotspot treat it as a working network instead of dropping it for &ldquo;no internet&rdquo;.</td></tr>
+        <tr><td>Stable Hotspot Channel</td><td>The hotspot remembers the WiFi channel of your router, so connected phones are not disconnected when DURALINK rejoins the router after a restart.</td></tr>
         <tr><td>Dual Tracker Support</td><td>Compatible with Teltonika FMC125 and FMC650 GPS trackers out of the box.</td></tr>
         <tr><td>Auto-IMEI Detection</td><td>Device automatically reads the tracker's IMEI number &mdash; no manual entry required.</td></tr>
         <tr><td>MQTT &amp; Codec 8E Output</td><td>Choose between JSON over MQTT or Teltonika Codec 8 Extended binary TCP to match your platform (compatible with Flespi, Wialon, and others).</td></tr>
@@ -390,6 +392,7 @@
         <tr><td>Automatic NTP Sync</td><td>Synchronises time with internet NTP servers whenever WiFi is connected, ensuring accurate UTC timestamps.</td></tr>
         <tr><td>Dual OTA Update Methods</td><td>Upgrade firmware directly from the cloud repository with 1-click update, or upload a local <code>.bin</code> file via browser.</td></tr>
         <tr><td>Remote Reboot &amp; Maintenance</td><td>Restart the device remotely or wipe queued records from the portal without a physical site visit.</td></tr>
+        <tr><td>Configuration Backup</td><td>Export all settings to a file and import them on another DL-01 to set up a fleet quickly.</td></tr>
         <tr><td>Factory Reset via BOOT Button</td><td>Hold the physical BOOT button for 5 seconds to restore all settings to factory defaults.</td></tr>
         <tr><td>Permanent Factory Serial Number</td><td>Assigned a permanent 10-digit serial number stored in dedicated secure storage that survives resets and updates.</td></tr>
         <tr><td>Settings Preserved on Update</td><td>WiFi credentials, server settings, and all configuration are retained across firmware updates.</td></tr>
@@ -407,7 +410,7 @@
       <tbody>
         <tr><td>Teltonika GPS tracker</td><td>FMC125 or FMC650 with an RS232 port</td></tr>
         <tr><td>RS232 cable</td><td>Between the tracker's RS232 port and DURALINK</td></tr>
-        <tr><td>MicroSD card</td><td>Optional but recommended (FAT32, any capacity). When omitted, built-in internal flash storage buffers records automatically.</td></tr>
+        <tr><td>MicroSD card</td><td>Optional but recommended: up to 32 GB, formatted FAT32 (64 GB and larger cards use exFAT, which is not supported). When omitted, built-in internal flash storage buffers records automatically.</td></tr>
         <tr><td>WiFi network</td><td>With internet access for data delivery and NTP time sync</td></tr>
         <tr><td>Power supply</td><td>9–24 V DC</td></tr>
       </tbody>
@@ -437,28 +440,29 @@
       </table>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Open the configuration portal</h4>
-      <p>Open any web browser and navigate to <strong><code>http://192.168.4.1</code></strong> or <strong><code>http://dl01-&lt;MAC&gt;.local</code></strong> (e.g. <code>http://dl01-a1b2c3d4e5f6.local</code>, using the 12-character lowercase MAC on your device label). The DURALINK portal opens immediately.</p>
+      <p>Open any web browser and navigate to <strong><code>http://192.168.4.1</code></strong> or <strong><code>http://dl01-&lt;serial&gt;.local</code></strong> (e.g. <code>http://dl01-8126060004.local</code>, using the 10-digit serial number on your device label; units without a factory serial use <code>dl01-&lt;MAC&gt;.local</code>). The DURALINK portal opens immediately.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Connect to your WiFi network</h4>
-      <p>Go to the <strong>WiFi</strong> tab, click the scan button, select your network, enter the password, then click <strong>Save &amp; Reconnect</strong>.</p>
+      <p>Go to the <strong>WiFi</strong> tab, click <strong>Scan</strong>, select your network, enter the password, then click <strong>SAVE</strong>. The device saves the settings and restarts (about 10 seconds); reconnect to the <code>DL01-XXXX</code> hotspot if your phone does not do so automatically.</p>
+      <div class="callout info">The first time DURALINK joins a new router, its hotspot moves to the router&rsquo;s WiFi channel and your phone may disconnect once. Reconnect to <code>DL01-XXXX</code>; the channel is remembered, so this does not happen again on later restarts.</div>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">5. Select your tracker type</h4>
-      <p>Go to the <strong>Device</strong> tab, select <strong>FMC125</strong> or <strong>FMC650</strong>, click <strong>Save &amp; Reconnect</strong>, then power-cycle the device.</p>
+      <p>Go to the <strong>Device</strong> tab, select <strong>FMC125</strong> or <strong>FMC650</strong>, then click <strong>SAVE</strong>. The device restarts with the new tracker mode.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">6. Configure your server</h4>
-      <p>Go to the <strong>Server</strong> tab, choose <strong>MQTT</strong> or <strong>Codec 8E TCP</strong>, enter your server address and credentials, then click <strong>Save &amp; Reconnect</strong>.</p>
+      <p>Go to the <strong>Server</strong> tab, choose <strong>MQTT</strong> or <strong>Codec 8E TCP</strong>, enter your server address and credentials, then click <strong>SAVE</strong>. Use <strong>Test Connection</strong> after the restart to confirm the server receives data.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">7. Verify operation</h4>
       <p style="margin-bottom:0;">Check the status bar at the top of the portal. All indicators should show green. The device is now operational.</p>
     </div>
     <div class="callout success">
-      The portal is always accessible at <code>http://192.168.4.1</code> or <code>http://dl01-&lt;MAC&gt;.local</code> even after the device connects to your local router. You can reconfigure or monitor at any time without interrupting data transmission.
+      The portal is always accessible at <code>http://192.168.4.1</code> or <code>http://dl01-&lt;serial&gt;.local</code> even after the device connects to your local router. You can reconfigure or monitor at any time without interrupting data transmission.
     </div>
 
     <!-- 5. CONFIGURATION PORTAL -->
     <h2 id="portal">5. Configuration Portal</h2>
     <p>
-      The DURALINK portal is a web interface accessible at <code>http://192.168.4.1</code> or <code>http://dl01-&lt;MAC&gt;.local</code> from any device
+      The DURALINK portal is a web interface accessible at <code>http://192.168.4.1</code> or <code>http://dl01-&lt;serial&gt;.local</code> from any device
       connected to the DURALINK hotspot or the same local network. No app or software installation is required.
     </p>
 
@@ -484,15 +488,15 @@
     <table class="wikitable kv">
       <thead><tr><th>Setting</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td>Network Scan</td><td>Click the scan button to discover nearby WiFi networks. Click any result to auto-fill the network name.</td></tr>
+        <tr><td>Network Scan</td><td>Click <strong>Scan</strong> next to a network field to discover nearby 2.4 GHz WiFi networks. Click any result to auto-fill the network name. If the device is busy searching for its router, the portal asks you to try again in a few seconds.</td></tr>
         <tr><td>Network SSID</td><td>The name of your WiFi network.</td></tr>
-        <tr><td>Password</td><td>Your WiFi password. Hidden by default &mdash; use the show/hide toggle to reveal.</td></tr>
+        <tr><td>Password</td><td>Your WiFi password: at least 8 characters, or blank for an open network. Click <em>Show</em> to see the saved password of an existing network; leave the field blank to keep it.</td></tr>
         <tr><td>Add / Remove</td><td>Manage up to 5 network profiles. Device picks the strongest available at startup.</td></tr>
         <tr><td>CSV Import</td><td>Upload a <code>.csv</code> file to add multiple WiFi profiles at once.</td></tr>
-        <tr><td>CSV Export</td><td>Download your current WiFi profiles as a backup file.</td></tr>
+        <tr><td>CSV Export</td><td>Download your saved network names as a backup file. Passwords are not included in the export.</td></tr>
       </tbody>
     </table>
-    <p>Click <strong>Save &amp; Reconnect</strong> to apply changes.</p>
+    <p>Click <strong>SAVE</strong> to apply changes. The device saves the settings and restarts automatically (about 10 seconds).</p>
 
     <h3 id="portal-device">5.3 Device Tab</h3>
     <p>Select which Teltonika tracker model is connected to the RS232 port and manage tracker identification.</p>
@@ -505,7 +509,7 @@
       </tbody>
     </table>
     <div class="callout warning">
-      After changing tracker mode, click <strong>Save &amp; Reconnect</strong> then <strong>power-cycle the device</strong> (remove and restore power) for changes to take full effect.
+      After changing tracker mode, click <strong>SAVE</strong>. The device restarts automatically and uses the new tracker mode from then on.
     </div>
 
     <h3 id="portal-server">5.4 Server Tab</h3>
@@ -520,9 +524,10 @@
         <tr><td>QoS</td><td>MQTT Quality of Service: <code>0</code> (fire &amp; forget), <code>1</code> (at least once delivery), <code>2</code> (exactly once).</td></tr>
         <tr><td>Keep-Alive</td><td>MQTT keep-alive interval in seconds (default: 60 s).</td></tr>
         <tr><td>Device IMEI</td><td>Required for Codec 8E mode. Automatically populated when read from the tracker.</td></tr>
+        <tr><td>Test Connection</td><td>Sends a test record to the selected server (MQTT or Codec 8E) so you can verify delivery without waiting for tracker data.</td></tr>
       </tbody>
     </table>
-    <p>Click <strong>Save &amp; Reconnect</strong> to apply changes.</p>
+    <p>Click <strong>SAVE</strong> to apply changes. The device saves the settings and restarts automatically (about 10 seconds).</p>
 
     <h3 id="portal-maintenance">5.5 Maintenance Tab</h3>
     <p>Comprehensive system tools, live serial diagnostics, storage management, and firmware maintenance.</p>
@@ -542,6 +547,15 @@
       </tbody>
     </table>
 
+    <h4>AP Settings</h4>
+    <table class="wikitable kv">
+      <thead><tr><th>Setting</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>AP SSID</td><td>Name of the device hotspot (default <code>DL01-XXXX</code>).</td></tr>
+        <tr><td>AP Password</td><td>Hotspot password, at least 8 characters. Leave blank to keep the current password; click <em>Show</em> to see it. If a value is not accepted, the portal shows which setting to correct.</td></tr>
+      </tbody>
+    </table>
+
     <h4>System Control</h4>
     <table class="wikitable kv">
       <thead><tr><th>Control</th><th>Description</th></tr></thead>
@@ -552,20 +566,36 @@
       </tbody>
     </table>
 
+    <h4>Configuration Backup</h4>
+    <p>Copies the settings of one DL-01 to another, for example to set up several devices for the same site.</p>
+    <table class="wikitable kv">
+      <thead><tr><th>Control</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Export Config</td><td>Downloads <code>dl01-config-&lt;serial&gt;.json</code> with the WiFi networks, server settings, tracker settings and hotspot password.</td></tr>
+        <tr><td>Import Config</td><td>Loads an exported file into the form. Review the WiFi, Device and Server tabs, then click <strong>SAVE</strong> to apply. Nothing changes until you save.</td></tr>
+      </tbody>
+    </table>
+    <p>The hotspot name, MQTT client ID and manually entered IMEI are not copied, because each device must keep its own.</p>
+    <div class="callout warning">
+      The exported file contains the WiFi, MQTT and hotspot passwords in plain text. Store and share it as you would the passwords themselves.
+    </div>
+
     <h4>Firmware Update (OTA)</h4>
     <p>DURALINK supports two wireless firmware update pathways directly from the portal:</p>
     <ul class="plain" style="margin-left:16px; margin-bottom:12px;">
-      <li><strong>Remote Cloud Update:</strong> Click <em>Check for Updates</em> to automatically query the cloud server for official releases, then click <em>Install Update</em> to stream and flash wirelessly with live progress.</li>
+      <li><strong>Remote Cloud Update:</strong> Click <em>Check for Updates</em>. The device restarts briefly into <em>update mode</em> and then checks the cloud server for official releases by itself; click <em>Download &amp; Install Update</em> to stream and flash wirelessly with live progress.</li>
       <li><strong>Local File Upload:</strong> Choose a local <code>.bin</code> firmware file from your computer or phone and click <em>Upload &amp; Install</em>.</li>
     </ul>
 
     <h4>Device Info Card</h4>
     <p>Displays verified hardware parameters and identity records:</p>
     <ul class="plain" style="margin-left:16px;">
-      <li><strong>Firmware Version:</strong> Active firmware build tag (e.g. <code>v1.5.7</code>).</li>
+      <li><strong>Firmware Version:</strong> Active firmware build tag (e.g. <code>v1.5.9</code>).</li>
       <li><strong>Serial Number:</strong> Permanent 10-digit hardware serial number preserved in non-volatile storage.</li>
-      <li><strong>MAC Address:</strong> Hardware WiFi MAC address.</li>
-      <li><strong>Local URL:</strong> Clickable direct link to the device's mDNS hostname (e.g. <code>http://dl01-a1b2c3d4e5f6.local/</code>).</li>
+      <li><strong>WiFi MAC (to router):</strong> The address your router lists for this device.</li>
+      <li><strong>Hotspot MAC:</strong> The address of the device&rsquo;s own <code>DL01-XXXX</code> hotspot.</li>
+      <li><strong>Local URL:</strong> Clickable direct link to the device's mDNS hostname (e.g. <code>http://dl01-8126060004.local/</code>).</li>
+      <li><strong>Health:</strong> <em>OK</em> with free memory and last restart reason, or a warning if records were lost, the device restarted unexpectedly (red) or ran short of memory (amber). Counts reset when power is removed.</li>
     </ul>
 
     <!-- 6. DATA OUTPUT -->
@@ -596,9 +626,9 @@
     <table class="wikitable kv">
       <thead><tr><th>Field</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>Timestamp</code></td><td>Unix time in milliseconds, sourced from the hardware RTC — accurate even without GPS lock or internet access.</td></tr>
+        <tr><td><code>Timestamp</code></td><td>Unix time in milliseconds. Uses internet (NTP) time once the device has synchronised over WiFi; until then, the tracker&rsquo;s own record timestamp is used. If the tracker&rsquo;s clock is not set yet (dates before 2024), up to 6 records are held for at most 2 minutes and sent with the corrected time once NTP answers.</td></tr>
         <tr><td><code>Priority</code></td><td>Record priority from the tracker: <code>0</code> = Low, <code>1</code> = High, <code>2</code> = Panic.</td></tr>
-        <tr><td><code>Latitude</code> / <code>Longitude</code></td><td>GPS coordinates in decimal degrees.</td></tr>
+        <tr><td><code>Latitude</code> / <code>Longitude</code></td><td>GPS coordinates in decimal degrees (up to 7 decimal places).</td></tr>
         <tr><td><code>Altitude</code></td><td>Altitude above sea level in metres.</td></tr>
         <tr><td><code>Angle</code></td><td>Vehicle heading in degrees (0–359, where 0° = North).</td></tr>
         <tr><td><code>Speed</code></td><td>Speed in km/h.</td></tr>
@@ -647,11 +677,11 @@
     <table class="wikitable kv" style="margin-top:14px">
       <thead><tr><th>Behaviour</th><th>Detail</th></tr></thead>
       <tbody>
-        <tr><td>Primary storage (MicroSD)</td><td>When an SD card is inserted, records are saved as sequential files (e.g. <code>00000001.jsn</code>). Capable of buffering millions of records.</td></tr>
+        <tr><td>Primary storage (MicroSD)</td><td>When an SD card is inserted, records are saved as sequential files (e.g. <code>00000001.jsn</code>). Holds up to about 65,000 queued records (one FAT32 folder); beyond that, new records go to internal flash.</td></tr>
         <tr><td>Fallback storage (Internal Flash)</td><td>If no SD card is installed, DURALINK automatically buffers records to an internal non-volatile circular flash queue. When full, the oldest records roll over continuously so logging never freezes.</td></tr>
         <tr><td>Delivery Priority</td><td>On connection restore, DURALINK flushes queues in order: <strong>MicroSD card &rarr; Internal Flash &rarr; Live stream</strong>.</td></tr>
         <tr><td>After reboot</td><td>Record sequence numbering resumes from the highest existing file &mdash; no records are skipped or overwritten.</td></tr>
-        <tr><td>On reconnect</td><td>All pending records are delivered in strictly chronological sequence, automatically.</td></tr>
+        <tr><td>On reconnect</td><td>Pending records are delivered automatically, oldest first within each storage queue.</td></tr>
       </tbody>
     </table>
     <div class="callout success">
@@ -666,13 +696,14 @@
     <p>When the device is connected to a WiFi network with internet access, updates can be installed with a single click:</p>
     <div style="background:#f8fafc; border:1px solid #d0dcea; border-radius:4px; padding:20px 24px; margin-bottom:20px;">
       <h4 style="margin-top:0; color:#1a4a8a; font-size:14px;">1. Navigate to Maintenance tab</h4>
-      <p>Open the portal at <code>http://192.168.4.1</code> or <code>http://dl01-&lt;MAC&gt;.local</code> and click the <strong>Maintenance</strong> tab.</p>
+      <p>Open the portal at <code>http://192.168.4.1</code> or <code>http://dl01-&lt;serial&gt;.local</code> and click the <strong>Maintenance</strong> tab.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Check for updates</h4>
-      <p>Under <em>Remote Cloud Update</em>, click <strong>Check for Updates</strong>. The device contacts the official firmware repository and displays release details.</p>
+      <p>Under <em>Remote Cloud Update</em>, click <strong>Check for Updates</strong>. The device restarts into <strong>update mode</strong> (about 15 seconds) &mdash; stay on the page; it reconnects and checks the official firmware repository by itself, then shows the release details.</p>
+      <div class="callout info">In update mode an amber banner shows the time left. Tracker records are still received and stored, and are sent after the update. The device returns to normal operation by itself: after installing, 30 seconds after an &ldquo;up to date&rdquo; result, or after 10 minutes at most. Use <strong>Return to normal now</strong> to leave earlier.</div>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Install update</h4>
-      <p>Click <strong>Install Update</strong>. The device streams the firmware, verifies cryptographic checksums, and updates the inactive flash partition with real-time percentage feedback.</p>
+      <p>Click <strong>Download &amp; Install Update</strong>. The device streams the firmware, verifies the image checksum, and updates the inactive flash partition with real-time percentage feedback. The portal stays usable while the update check runs.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Automatic restart</h4>
       <p style="margin-bottom:0;">Upon completion, DURALINK restarts into the new version within 10 seconds. Reconnect and verify the version in <em>Device Info</em>.</p>
@@ -743,14 +774,17 @@
         <tr><td>No data appearing on server</td><td>Wrong device mode or tracker not configured correctly</td><td>Verify the Device tab setting matches the connected tracker model. For FMC650, confirm the tracker is set to <em>Rec to LCD</em> output in the Teltonika Configurator.</td></tr>
         <tr><td>Status bar: MQTT/TCP Offline</td><td>Server unreachable or incorrect credentials</td><td>Double-check server address, port, and credentials in the Server tab.</td></tr>
         <tr><td>Status bar: WiFi Offline</td><td>Wrong WiFi password or router out of range</td><td>Re-enter WiFi credentials in the WiFi tab. Confirm the router is reachable and broadcasting.</td></tr>
-        <tr><td>Status bar: SD Not Mounted</td><td>SD card missing or incorrectly formatted</td><td>Reinsert the SD card and ensure it is formatted as FAT32.</td></tr>
+        <tr><td>Status bar: SD Not Mounted</td><td>SD card missing, incorrectly formatted, or larger than 32 GB</td><td>Reinsert the SD card. Use a card of up to 32 GB formatted as FAT32.</td></tr>
         <tr><td>Records accumulating, not sending</td><td>Server connection is offline</td><td>Check Server tab settings. Records will deliver automatically once the connection is restored — no manual action required.</td></tr>
         <tr><td>Timestamps are incorrect</td><td>NTP sync not yet completed</td><td>Confirm the device has internet access via WiFi. DURALINK synchronises time with NTP servers automatically on connection.</td></tr>
         <tr><td>FMC650: no records appear</td><td>FMC650 not set to Rec to LCD mode</td><td>In the Teltonika Configurator, set the FMC650 RS232 data output mode to <strong>Rec to LCD</strong> or <strong>Log Mode</strong>.</td></tr>
         <tr><td>RS232 data not detected</td><td>Wiring or tracker output mode issue</td><td>Open the <strong>RS232 Live Monitor</strong> in the Maintenance tab. Check that Tracker TX is connected to DL-01 RX, common GND is connected, and baud rate is 115200 8-N-1.</td></tr>
-        <tr><td>Cannot connect to portal</td><td>Not connected to the DURALINK hotspot</td><td>Disconnect from any other WiFi network and connect to <code>DL01-XXXX</code> first, then navigate to <code>http://192.168.4.1</code> or <code>http://dl01-&lt;MAC&gt;.local</code>.</td></tr>
+        <tr><td>Cannot connect to portal</td><td>Not connected to the DURALINK hotspot</td><td>Disconnect from any other WiFi network and connect to <code>DL01-XXXX</code> first, then navigate to <code>http://192.168.4.1</code> or <code>http://dl01-&lt;serial&gt;.local</code>.</td></tr>
+        <tr><td>Phone or laptop drops off the hotspot right after the device joins a router</td><td>The hotspot moved to the router&rsquo;s WiFi channel (first connection to a new router only)</td><td>Reconnect to <code>DL01-XXXX</code>. The channel is remembered, so it does not happen again on later restarts.</td></tr>
+        <tr><td>Device never connects to the router</td><td>Router set to WPA3-only, or 5 GHz only</td><td>Set the router (or its 2.4 GHz band) to <strong>WPA2</strong> or <strong>WPA2/WPA3 mixed</strong> mode. DURALINK uses 2.4 GHz WPA2.</td></tr>
+        <tr><td>SAVE shows an error</td><td>A setting was not accepted</td><td>Read the error message: it names the setting to correct (for example, passwords must be at least 8 characters).</td></tr>
         <tr><td>OTA update fails or shows error</td><td>Weak WiFi signal or interrupted download</td><td>Stay close to the DURALINK hotspot during upload. For Cloud OTA, ensure the connected WiFi router has active internet access.</td></tr>
-        <tr><td>Device unresponsive after config change</td><td>Restart required</td><td>Use <strong>Reboot Device</strong> in the Maintenance tab, or power-cycle the device.</td></tr>
+        <tr><td>Portal unreachable for a few seconds after SAVE</td><td>The device restarts to apply new settings</td><td>Wait about 10 seconds, reconnect to the hotspot if needed, and reload the page. If it stays unreachable, use <strong>Reboot Device</strong> or power-cycle the device.</td></tr>
         <tr><td>Forgot the AP hotspot password</td><td>Password changed in Maintenance tab</td><td>Perform a <a href="#factory-reset">factory reset</a>: hold the BOOT button for 5 seconds. All settings will return to factory defaults.</td></tr>
       </tbody>
     </table>
@@ -760,17 +794,17 @@
     <table class="spec-table">
       <tbody>
         <tr><td>Model</td><td>DL-01 RS232-to-WiFi Gateway</td></tr>
-        <tr><td>Firmware Version</td><td>v1.5.7</td></tr>
+        <tr><td>Firmware Version</td><td>v1.5.9</td></tr>
         <tr><td>Supported Trackers</td><td>Teltonika FMC125, Teltonika FMC650</td></tr>
         <tr><td>Output Protocols</td><td>MQTT (JSON), Teltonika Codec 8 Extended (TCP)</td></tr>
-        <tr><td>Wireless Standard</td><td>WiFi 802.11 b/g/n, 2.4 GHz</td></tr>
+        <tr><td>Wireless Standard</td><td>WiFi 802.11 b/g/n, 2.4 GHz, WPA2 (WPA3-only routers not supported)</td></tr>
         <tr><td>WiFi Profiles</td><td>Up to 5 (auto-selects strongest signal)</td></tr>
-        <tr><td>Domain Name Resolution</td><td>mDNS / Bonjour (http://dl01-&lt;MAC&gt;.local)</td></tr>
+        <tr><td>Domain Name Resolution</td><td>mDNS / Bonjour (http://dl01-&lt;serial&gt;.local; dl01-&lt;MAC&gt;.local on units without a factory serial)</td></tr>
         <tr><td>RS232 Interface</td><td>115200 bps, 8-N-1</td></tr>
-        <tr><td>Local Storage</td><td>MicroSD card (FAT32, any capacity) + Built-in Internal Flash fallback buffer</td></tr>
+        <tr><td>Local Storage</td><td>MicroSD card (up to 32 GB, FAT32) + built-in internal flash fallback buffer</td></tr>
         <tr><td>Time Synchronisation</td><td>Automatic NTP network synchronization via WiFi</td></tr>
-        <tr><td>Configuration Interface</td><td>Web browser — no app or software required (Gzip-compressed, Keep-Alive)</td></tr>
-        <tr><td>Configuration URL</td><td>http://192.168.4.1 or http://dl01-&lt;MAC&gt;.local</td></tr>
+        <tr><td>Configuration Interface</td><td>Web browser — no app or software required (gzip-compressed, cached, hotspot recognised as online)</td></tr>
+        <tr><td>Configuration URL</td><td>http://192.168.4.1 or http://dl01-&lt;serial&gt;.local</td></tr>
         <tr><td>Default AP Network Name</td><td>DL01-XXXX (last 4 characters of device MAC address)</td></tr>
         <tr><td>Default AP Password</td><td>duraconfig</td></tr>
         <tr><td>Factory Reset</td><td>BOOT button — hold 5 seconds</td></tr>
@@ -786,7 +820,8 @@
     <table class="wikitable kv">
       <thead><tr><th>Version</th><th>Summary</th></tr></thead>
       <tbody>
-        <tr><td><strong>v1.5.7</strong></td><td>mDNS local domain resolution (<code>http://dl01-&lt;MAC&gt;.local</code>); build-time Gzip Web UI compression (~75% bandwidth reduction); persistent HTTP Keep-Alive connections; dual-core task optimization; refined client-friendly RS232 monitor guide</td></tr>
+        <tr><td><strong>v1.5.9</strong></td><td>Stable memory use under portal load (no lost records); cloud update runs in update mode; records from a tracker with an unset clock get the correct time; Health row in Device Info; saved WiFi, MQTT and hotspot passwords can be shown; SD cards up to 32 GB (FAT32); faster, more stable portal (page caching, background network scan and update check); hotspot remembers the router&rsquo;s WiFi channel; phones and laptops treat the hotspot as online; local address <code>http://dl01-&lt;serial&gt;.local</code>; Device Info shows both MAC addresses; SAVE restarts the device automatically, reloads the portal when it is back and explains rejected settings; configuration export and import; cloud update now offers stable releases to pre-release units; FMC650 coordinate precision fix; WPA3-only routers no longer supported</td></tr>
+        <tr><td>v1.5.7</td><td>mDNS local domain resolution (<code>http://dl01-&lt;MAC&gt;.local</code>); build-time Gzip Web UI compression (~75% bandwidth reduction); persistent HTTP Keep-Alive connections; dual-core task optimization; refined client-friendly RS232 monitor guide</td></tr>
         <tr><td>v1.5.6</td><td>Remote Cloud OTA update integration with live progress polling and automatic reboot</td></tr>
         <tr><td>v1.5.5</td><td>Hardware production alignment; permanent 10-digit factory serial number in dedicated non-volatile storage; updated default hotspot SSID (<code>DL01-XXXX</code>) and password (<code>duraconfig</code>)</td></tr>
         <tr><td>v1.5.4</td><td>Internal flash circular queue continuous rollover fix (prevents queue freeze during prolonged offline periods)</td></tr>
@@ -806,7 +841,7 @@
 
 <!-- ═══ FOOTER ════════════════════════════════════════════════════════════ -->
 <div id="footer">
-  <p><strong>DL-01</strong> RS232-to-WiFi Gateway &nbsp;&mdash;&nbsp; User Manual v1.5.7</p>
+  <p><strong>DL-01</strong> RS232-to-WiFi Gateway &nbsp;&mdash;&nbsp; User Manual v1.5.9</p>
   <p>Copyright &copy; 2026 <strong>Maruko Dura Solusi</strong> &nbsp;&mdash;&nbsp; <a href="mailto:support@maruko.co.id">support@maruko.co.id</a></p>
 </div>
 

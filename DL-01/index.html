@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DL-01 RS232-to-WiFi Gateway — User Manual v1.5.8</title>
+<title>DL-01 RS232-to-WiFi Gateway — User Manual v1.5.9</title>
 <style>
   /* ── Reset & Base ─────────────────────────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -282,7 +282,7 @@
 <div id="topbar">
   <div class="logo-wrap">
     <img src="logo.png" alt="DuraLink">
-    <span class="version-badge">v1.5.8</span>
+    <span class="version-badge">v1.5.9</span>
   </div>
   <nav>
     <a href="#overview">Overview</a>
@@ -343,7 +343,7 @@
         <h1>DL-01 RS232-to-WiFi Gateway</h1>
         <div class="subtitle">Wireless telemetry bridge for Teltonika GPS/telematics trackers &mdash; User Manual</div>
         <div class="product-tags">
-          <span class="tag filled">v1.5.8</span>
+          <span class="tag filled">v1.5.9</span>
           <span class="tag">FMC125</span>
           <span class="tag">FMC650</span>
           <span class="tag">MQTT</span>
@@ -490,7 +490,7 @@
       <tbody>
         <tr><td>Network Scan</td><td>Click <strong>Scan</strong> next to a network field to discover nearby 2.4 GHz WiFi networks. Click any result to auto-fill the network name. If the device is busy searching for its router, the portal asks you to try again in a few seconds.</td></tr>
         <tr><td>Network SSID</td><td>The name of your WiFi network.</td></tr>
-        <tr><td>Password</td><td>Your WiFi password: at least 8 characters, or blank for an open network. Saved passwords are never shown again; leave the field blank to keep the saved password of an existing network.</td></tr>
+        <tr><td>Password</td><td>Your WiFi password: at least 8 characters, or blank for an open network. Click <em>Show</em> to see the saved password of an existing network; leave the field blank to keep it.</td></tr>
         <tr><td>Add / Remove</td><td>Manage up to 5 network profiles. Device picks the strongest available at startup.</td></tr>
         <tr><td>CSV Import</td><td>Upload a <code>.csv</code> file to add multiple WiFi profiles at once.</td></tr>
         <tr><td>CSV Export</td><td>Download your saved network names as a backup file. Passwords are not included in the export.</td></tr>
@@ -552,7 +552,7 @@
       <thead><tr><th>Setting</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td>AP SSID</td><td>Name of the device hotspot (default <code>DL01-XXXX</code>).</td></tr>
-        <tr><td>AP Password</td><td>Hotspot password, at least 8 characters. Leave blank to keep the current password. If a value is not accepted, the portal shows which setting to correct.</td></tr>
+        <tr><td>AP Password</td><td>Hotspot password, at least 8 characters. Leave blank to keep the current password; click <em>Show</em> to see it. If a value is not accepted, the portal shows which setting to correct.</td></tr>
       </tbody>
     </table>
 
@@ -590,11 +590,12 @@
     <h4>Device Info Card</h4>
     <p>Displays verified hardware parameters and identity records:</p>
     <ul class="plain" style="margin-left:16px;">
-      <li><strong>Firmware Version:</strong> Active firmware build tag (e.g. <code>v1.5.8</code>).</li>
+      <li><strong>Firmware Version:</strong> Active firmware build tag (e.g. <code>v1.5.9</code>).</li>
       <li><strong>Serial Number:</strong> Permanent 10-digit hardware serial number preserved in non-volatile storage.</li>
       <li><strong>WiFi MAC (to router):</strong> The address your router lists for this device.</li>
       <li><strong>Hotspot MAC:</strong> The address of the device&rsquo;s own <code>DL01-XXXX</code> hotspot.</li>
       <li><strong>Local URL:</strong> Clickable direct link to the device's mDNS hostname (e.g. <code>http://dl01-8126060004.local/</code>).</li>
+      <li><strong>Health:</strong> <em>OK</em> with free memory and last restart reason, or a warning if records were lost, the device restarted unexpectedly (red) or ran short of memory (amber). Counts reset when power is removed.</li>
     </ul>
 
     <!-- 6. DATA OUTPUT -->
@@ -625,7 +626,7 @@
     <table class="wikitable kv">
       <thead><tr><th>Field</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>Timestamp</code></td><td>Unix time in milliseconds. Uses internet (NTP) time once the device has synchronised over WiFi; until then, the tracker&rsquo;s own record timestamp is used.</td></tr>
+        <tr><td><code>Timestamp</code></td><td>Unix time in milliseconds. Uses internet (NTP) time once the device has synchronised over WiFi; until then, the tracker&rsquo;s own record timestamp is used. If the tracker&rsquo;s clock is not set yet (dates before 2024), up to 6 records are held for at most 2 minutes and sent with the corrected time once NTP answers.</td></tr>
         <tr><td><code>Priority</code></td><td>Record priority from the tracker: <code>0</code> = Low, <code>1</code> = High, <code>2</code> = Panic.</td></tr>
         <tr><td><code>Latitude</code> / <code>Longitude</code></td><td>GPS coordinates in decimal degrees (up to 7 decimal places).</td></tr>
         <tr><td><code>Altitude</code></td><td>Altitude above sea level in metres.</td></tr>
@@ -793,7 +794,7 @@
     <table class="spec-table">
       <tbody>
         <tr><td>Model</td><td>DL-01 RS232-to-WiFi Gateway</td></tr>
-        <tr><td>Firmware Version</td><td>v1.5.8</td></tr>
+        <tr><td>Firmware Version</td><td>v1.5.9</td></tr>
         <tr><td>Supported Trackers</td><td>Teltonika FMC125, Teltonika FMC650</td></tr>
         <tr><td>Output Protocols</td><td>MQTT (JSON), Teltonika Codec 8 Extended (TCP)</td></tr>
         <tr><td>Wireless Standard</td><td>WiFi 802.11 b/g/n, 2.4 GHz, WPA2 (WPA3-only routers not supported)</td></tr>
@@ -819,7 +820,7 @@
     <table class="wikitable kv">
       <thead><tr><th>Version</th><th>Summary</th></tr></thead>
       <tbody>
-        <tr><td><strong>v1.5.8</strong></td><td>Faster, more stable portal (page caching, background network scan and update check); hotspot remembers the router&rsquo;s WiFi channel; phones and laptops treat the hotspot as online; local address <code>http://dl01-&lt;serial&gt;.local</code>; Device Info shows both MAC addresses; SAVE restarts the device automatically, reloads the portal when it is back and explains rejected settings; configuration export and import; cloud update now offers stable releases to pre-release units; FMC650 coordinate precision fix; WPA3-only routers no longer supported</td></tr>
+        <tr><td><strong>v1.5.9</strong></td><td>Stable memory use under portal load (no lost records); cloud update runs in update mode; records from a tracker with an unset clock get the correct time; Health row in Device Info; saved WiFi, MQTT and hotspot passwords can be shown; SD cards up to 32 GB (FAT32); faster, more stable portal (page caching, background network scan and update check); hotspot remembers the router&rsquo;s WiFi channel; phones and laptops treat the hotspot as online; local address <code>http://dl01-&lt;serial&gt;.local</code>; Device Info shows both MAC addresses; SAVE restarts the device automatically, reloads the portal when it is back and explains rejected settings; configuration export and import; cloud update now offers stable releases to pre-release units; FMC650 coordinate precision fix; WPA3-only routers no longer supported</td></tr>
         <tr><td>v1.5.7</td><td>mDNS local domain resolution (<code>http://dl01-&lt;MAC&gt;.local</code>); build-time Gzip Web UI compression (~75% bandwidth reduction); persistent HTTP Keep-Alive connections; dual-core task optimization; refined client-friendly RS232 monitor guide</td></tr>
         <tr><td>v1.5.6</td><td>Remote Cloud OTA update integration with live progress polling and automatic reboot</td></tr>
         <tr><td>v1.5.5</td><td>Hardware production alignment; permanent 10-digit factory serial number in dedicated non-volatile storage; updated default hotspot SSID (<code>DL01-XXXX</code>) and password (<code>duraconfig</code>)</td></tr>
@@ -840,7 +841,7 @@
 
 <!-- ═══ FOOTER ════════════════════════════════════════════════════════════ -->
 <div id="footer">
-  <p><strong>DL-01</strong> RS232-to-WiFi Gateway &nbsp;&mdash;&nbsp; User Manual v1.5.8</p>
+  <p><strong>DL-01</strong> RS232-to-WiFi Gateway &nbsp;&mdash;&nbsp; User Manual v1.5.9</p>
   <p>Copyright &copy; 2026 <strong>Maruko Dura Solusi</strong> &nbsp;&mdash;&nbsp; <a href="mailto:support@maruko.co.id">support@maruko.co.id</a></p>
 </div>
 

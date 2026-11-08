@@ -91,12 +91,12 @@
 
   <!-- Teltonika -->
   <rect x="330" y="790" width="600" height="80" fill="url(#band)" clip-path="url(#tkClip)"/>
-  <text x="365" y="843" font-size="36" font-weight="800" font-style="italic" fill="#ffffff" letter-spacing="1">TELTONIKA</text>
-  <text x="900" y="838" text-anchor="end" font-size="15" font-weight="600" fill="#bcd0ee" letter-spacing="2">GPS TRACKER</text>
-  <path d="M530 895 c-16 0 -29 13 -29 29 c0 21 29 51 29 51 s29 -30 29 -51 c0 -16 -13 -29 -29 -29 z" fill="#1f5fd0"/>
-  <circle cx="530" cy="924" r="10" fill="#ffffff"/>
-  <text x="530" y="1025" text-anchor="middle" font-size="40" font-weight="800" fill="#0f2a4a">FMx1xx / FMC650</text>
-  <text x="530" y="1060" text-anchor="middle" class="sub">reads the DL-02 as an iButton</text>
+  <text x="365" y="840" font-size="20" font-weight="700" fill="#ffffff" letter-spacing="3">GPS TRACKER</text>
+  <text x="530" y="955" text-anchor="middle" font-size="52" font-weight="800" font-style="italic" fill="#1f5fd0" letter-spacing="2">TELTONIKA</text>
+  <line x1="420" y1="978" x2="640" y2="978" stroke="#c9d6ea" stroke-width="2"/>
+  <text x="530" y="1035" text-anchor="middle" font-size="44" font-weight="800" fill="#0f2a4a">FMx1xx</text>
+  <text x="530" y="1090" text-anchor="middle" font-size="44" font-weight="800" fill="#0f2a4a">FMC650</text>
+  <text x="530" y="1135" text-anchor="middle" class="sub">reads the DL-02 as an iButton</text>
   <text x="860" y="912" text-anchor="end" class="lbl">VCC</text>
   <text x="860" y="1012" text-anchor="end" class="lbl">GND</text>
   <text x="860" y="1100" text-anchor="end" class="lbl">1-WIRE</text>

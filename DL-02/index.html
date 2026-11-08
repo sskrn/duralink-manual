@@ -233,6 +233,8 @@
       <li><a href="#calibration">6. Calibration Guide</a></li>
       <li><a href="#filter">7. Signal Smoothing</a></li>
       <li><a href="#ota">8. Firmware Update</a></li>
+      <li class="sub"><a href="#ota-cloud">Remote Cloud Update</a></li>
+      <li class="sub"><a href="#ota-manual">Manual Firmware Flash</a></li>
       <li><a href="#factory-reset">9. Factory Reset</a></li>
       <li><a href="#troubleshooting">10. Troubleshooting</a></li>
       <li><a href="#specs">11. Specifications</a></li>
@@ -251,10 +253,12 @@
       <div class="product-info">
         <h1>DuraLink DL-02</h1>
         <div class="subtitle">Wireless Fuel Level Monitor for Teltonika GPS Trackers — User Manual</div>
+        <div class="subtitle" style="margin-top:-6px;">Last updated: 8 November 2026 &middot; Firmware v2.1.1</div>
         <div class="product-tags">
           <span class="tag green">Any Teltonika 1-Wire Device</span>
           <span class="tag">1-Wire iButton (DS1990A)</span>
           <span class="tag gray">WiFi</span>
+          <span class="tag gray">Bluetooth LE</span>
         </div>
       </div>
     </div>
@@ -264,7 +268,7 @@
     <p>
       The <strong>DuraLink DL-02</strong> reads fuel level from your vehicle's analog fuel sender and
       makes that data available to your GPS tracker over a standard 1-Wire connection.
-      It appears to the tracker as a single iButton (DS1990A) containing Liters, Fill Percentage, Raw Voltage, and Filtered Voltage packed directly into its 6-byte ID, with no additional hardware adapters required.
+      It appears to the tracker as a single iButton (DS1990A) whose ID carries Liters, Fill Percentage, Raw Voltage and a Status byte (ignition and digital inputs), with no additional hardware adapters required. The same data is also broadcast over Bluetooth LE.
     </p>
     <p>
       All configuration is done wirelessly through a built-in web interface accessible from any
@@ -282,10 +286,13 @@
         <tr><td>Dual-Core Architecture</td><td>1-Wire emulation on Core 1 ensures strict 1-Wire timing, while user web tasks run safely on Core 0.</td></tr>
         <tr><td>ADS1115 ADC</td><td>16-bit precision via I2C provides highly accurate fuel level voltage readings.</td></tr>
         <tr><td>Polynomial Calibration</td><td>Uses Teltonika-style cubic polynomial (voltage → liters) for exact fuel curve mapping.</td></tr>
-        <tr><td>All-in-One Data Packing</td><td>Broadcasts fuel in liters, fill percentage, raw voltage, and filtered voltage simultaneously inside a single emulated iButton (DS1990A) ID.</td></tr>
-        <tr><td>Signal Smoothing</td><td>Configurable presets (Responsive / Balanced / Stable) to eliminate fuel sloshing.</td></tr>
+        <tr><td>All-in-One Data Packing</td><td>Sends fuel in liters, fill percentage, raw voltage and a status byte (ignition, digital inputs, hold flag) inside a single emulated iButton (DS1990A) ID.</td></tr>
+        <tr><td>Ignition Hold</td><td>Freezes the fuel reading at the last valid value while the vehicle ignition (DIN1) is OFF, so a collapsing sender voltage is never reported as an empty or full tank.</td></tr>
+        <tr><td>Bluetooth LE Beacon</td><td>Broadcasts the same fuel data, configuration and status over BLE for Teltonika Advanced BLE sensors.</td></tr>
+        <tr><td>Signal Smoothing</td><td>Configurable presets (None / Responsive / Balanced / Stable) to eliminate fuel sloshing.</td></tr>
         <tr><td>NVS Storage</td><td>Calibration, filter settings, and WiFi credentials persist across reboots and power cycles.</td></tr>
-        <tr><td>Wireless OTA Updates</td><td>Flash new firmware wirelessly via the web UI with built-in rollback protection.</td></tr>
+        <tr><td>Remote Cloud Update</td><td>Download and install the latest firmware over the internet straight from the web UI, with built-in rollback protection. Manual <code>.bin</code> upload is also available.</td></tr>
+        <tr><td>Configuration Backup</td><td>Export all settings and calibration to a file and import them on another DL-02 to set up identical units quickly.</td></tr>
         <tr><td>Watchdog Timer</td><td>Built-in 10-second timeout automatically restarts the device if a task hangs.</td></tr>
       </tbody>
     </table>
@@ -306,31 +313,35 @@
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Connect to the DL-02 hotspot</h4>
       <p>On your phone or laptop, open WiFi settings and connect to:</p>
       <table class="wikitable" style="width:auto; margin-top:8px;">
-        <tr><th>Network Name (SSID)</th><td><code>DL02-XXYY</code> <em>(last 2 characters of the device's MAC address — unique per unit)</em></td></tr>
+        <tr><th>Network Name (SSID)</th><td><code>DL02-XXXX</code> <em>(last 4 characters of the device's MAC address — unique per unit, e.g. <code>DL02-197D</code>)</em></td></tr>
         <tr><th>Password</th><td><code>duraconfig</code></td></tr>
       </table>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Open the web interface</h4>
-      <p>Open any browser and go to: <strong><code>http://192.168.4.1</code></strong></p>
+      <p>Open any browser and go to: <strong><code>http://192.168.4.1</code></strong> (or <code>http://dl02-&lt;serial&gt;.local</code>, using the serial number shown on the System tab).</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Set your tank capacity</h4>
-      <p>Go to the <strong>Settings</strong> tab → enter your tank capacity in liters → tap <strong>Save</strong>.</p>
+      <p>Go to the <strong>Settings</strong> tab → enter your tank capacity in liters → press <strong>SAVE</strong> at the top of the screen. If the vehicle ignition is <em>not</em> wired to DIN1, also set <strong>DIN1 Ignition Input</strong> to <strong>Disabled</strong> (see <a href="#portal-settings">Section 4.2</a>).</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">5. Calibrate the fuel sender</h4>
       <p>Go to the <strong>Calibration</strong> tab and follow the calibration procedure in <a href="#calibration">Section 6</a>. At least 2 measurements are required.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">6. Configure your GPS tracker</h4>
-      <p style="margin-bottom:0;">Enter the sensor IDs from the <strong>Monitor</strong> tab into your Teltonika Configurator. See <a href="#onewire">Section 5</a> for details.</p>
+      <p style="margin-bottom:0;">Enable iButton reading in your Teltonika Configurator and decode the iButton ID on your server. See <a href="#onewire">Section 5</a> for details.</p>
     </div>
     <div class="callout success">
       The web interface is always available at <code>http://192.168.4.1</code> as long as you are connected to the DL-02 hotspot.
       You can adjust settings at any time without interrupting the tracker connection.
     </div>
+    <div class="callout info">
+      To save power the DL-02 hotspot turns off after <strong>60 minutes</strong> without web activity (adjustable in Settings → WiFi Timeout, <code>0</code> = never).
+      Fuel data to the tracker is not affected. To turn the hotspot back on, briefly press the <strong>BOOT</strong> button (do not hold it — holding for 5 s is a factory reset).
+    </div>
 
     <!-- ══ 4. WEB INTERFACE ══════════════════════════════════════════════ -->
     <h2 id="portal">4. Web Interface</h2>
     <p>
-      Open <strong><code>http://192.168.4.1</code></strong> in your browser while connected to the <code>DL02-XXYY</code> hotspot.
+      Open <strong><code>http://192.168.4.1</code></strong> in your browser while connected to the <code>DL02-XXXX</code> hotspot.
       The interface has four tabs at the bottom of the screen.
     </p>
 
@@ -341,18 +352,23 @@
       <tbody>
         <tr><td>Liters</td><td>Calculated fuel level in liters based on your calibration.</td></tr>
         <tr><td>Percent %</td><td>Fill level as a percentage of your configured tank capacity.</td></tr>
-        <tr><td>Raw Voltage</td><td>The voltage reading directly from the fuel sender (before smoothing).</td></tr>
-        <tr><td>Filtered Voltage</td><td>The smoothed voltage used for the fuel calculation.</td></tr>
-        <tr><td>1-Wire Sensor IDs</td><td>The three sensor addresses in Teltonika format — ready to copy into your tracker configurator.</td></tr>
+        <tr><td>Analog Voltage (Filtered)</td><td>The smoothed voltage used for the fuel calculation.</td></tr>
+        <tr><td>Analog Voltage (Raw)</td><td>The voltage reading directly from the fuel sender (before smoothing). A <strong>HOLD</strong> badge appears when the reading is frozen by Ignition Hold.</td></tr>
+        <tr><td>iButton ID — Raw Hex</td><td>The live iButton ID sent to the tracker, decoded byte by byte (see <a href="#onewire">Section 5</a>).</td></tr>
+        <tr><td>Status badges</td><td><strong>1-Wire OK</strong> (the tracker is reading the device), <strong>IGN ON/OFF</strong> (ignition input DIN1), and the active digital inputs.</td></tr>
       </tbody>
     </table>
 
     <h3 id="portal-settings">4.2 Settings Tab</h3>
+    <p>Change any settings, then press <strong>SAVE</strong> at the top of the screen. A dot on SAVE means there are unsaved changes.</p>
     <table class="wikitable plain">
       <thead><tr><th>Setting</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td>Tank Capacity (L)</td><td>The total capacity of your fuel tank in liters. This is used to calculate the fill percentage shown on the Monitor tab.</td></tr>
         <tr><td>Smoothing Level</td><td>Controls how much the reading is stabilised against vibration and sloshing. See <a href="#filter">Section 7</a>.</td></tr>
+        <tr><td>WiFi Timeout — Inactivity Timeout (Minutes)</td><td>The hotspot turns off after this many minutes without web activity to save power (default 60, <code>0</code> = never). Briefly press BOOT to turn it back on.</td></tr>
+        <tr><td>Ignition Hold — DIN1 Ignition Input</td><td><strong>Enabled</strong> (default): while ignition is OFF the fuel reading is frozen at the last valid value; after ignition ON it stays frozen another 5 s while the sender settles. <strong>Set to Disabled if DIN1 is not wired</strong> — an unconnected input reads as ignition OFF and would freeze the reading permanently.</td></tr>
+        <tr><td>Drop Trigger / Maintain Threshold (mV)</td><td>Fallback hold for installs without DIN1: a sudden voltage drop larger than the Drop Trigger freezes the reading while the voltage stays below the Maintain Threshold. Drop Trigger <code>0</code> = off (default).</td></tr>
       </tbody>
     </table>
 
@@ -360,12 +376,12 @@
     <table class="wikitable plain">
       <thead><tr><th>Control</th><th>Description</th></tr></thead>
       <tbody>
+        <tr><td>Live Sensor Reading</td><td>The current filtered voltage from the fuel sender.</td></tr>
+        <tr><td>+ Add This Reading</td><td>Adds a calibration point with the current voltage captured automatically — you only enter the liters.</td></tr>
         <tr><td>Calibration Points table</td><td>The list of liters/voltage pairs you have recorded.</td></tr>
-        <tr><td>+ Add Point</td><td>Add a new row to the table.</td></tr>
-        <tr><td>⊙ Capture button</td><td>Automatically records the current voltage reading — no manual measurement required.</td></tr>
-        <tr><td>✕ Remove</td><td>Delete a row from the calibration table.</td></tr>
+        <tr><td>+ Add Empty</td><td>Add an empty row to enter a liters/voltage pair by hand.</td></tr>
         <tr><td>Clear All</td><td>Erase all calibration data.</td></tr>
-        <tr><td>Calculate Polynomial</td><td>Computes the fuel curve from your measurements and saves it to the device.</td></tr>
+        <tr><td>Calculate Calibration</td><td>Computes the fuel curve from your measurements and saves it to the device.</td></tr>
         <tr><td>↓ Export</td><td>Download a backup of your calibration data as a file.</td></tr>
         <tr><td>↑ Import</td><td>Restore calibration from a previously saved backup file.</td></tr>
       </tbody>
@@ -376,8 +392,11 @@
       <thead><tr><th>Section</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td>WiFi Access Point</td><td>View the device network name and change the hotspot password. The device restarts after saving.</td></tr>
-        <tr><td>Diagnostics</td><td>Device uptime, memory status, and 1-Wire bus activity — useful for support purposes.</td></tr>
-        <tr><td>Firmware Update (OTA)</td><td>Upload a firmware update file provided by your supplier. See <a href="#ota">Section 8</a>.</td></tr>
+        <tr><td>Remote Cloud Update</td><td>Check for and install the latest firmware over the internet. See <a href="#ota-cloud">Section 8.1</a>.</td></tr>
+        <tr><td>Manual Firmware Flash (.bin)</td><td>Upload a firmware file provided by your supplier. See <a href="#ota-manual">Section 8.2</a>.</td></tr>
+        <tr><td>Configuration Backup</td><td><strong>Export Config</strong> saves all settings, the calibration, the hotspot password and the router WiFi to a file; <strong>Import Config</strong> loads it on another DL-02. Serial number, hotspot name and hostname are not copied. The file contains passwords in plain text — store it carefully.</td></tr>
+        <tr><td>Device Info</td><td>Firmware version, PCB revision, serial number and MAC addresses (WiFi AP, WiFi STA, Bluetooth LE).</td></tr>
+        <tr><td>Diagnostics</td><td>Uptime, boot count, last reset reason, memory, and 1-Wire poll rate / health — useful for support purposes.</td></tr>
         <tr><td>Reboot Device</td><td>Restart the device remotely.</td></tr>
       </tbody>
     </table>
@@ -385,43 +404,72 @@
     <!-- ══ 5. TRACKER CONFIGURATION ════════════════════════════════════ -->
     <h2 id="onewire">5. Tracker Configuration</h2>
     <p>
-      The DL-02 broadcasts all data as a single 1-Wire iButton ID. You need to enable <strong>iButton / Dallas (AVL ID 78)</strong>
-      in your Teltonika Configurator so the tracker can read the 6-byte hex payload.
+      The DL-02 sends all data as a single 1-Wire iButton ID. Enable <strong>iButton / Dallas (AVL ID 78)</strong>
+      in your Teltonika Configurator; the tracker then reports the 8-byte ID to your server, where it is decoded.
     </p>
     <p>
-      The iButton ID is shown live on the <strong>Monitor tab</strong> of the web interface.
-      However, the Teltonika tracker will dynamically read the hex string to extract the real-time values.
+      The live iButton ID is shown, already decoded, on the <strong>Monitor tab</strong> of the web interface.
     </p>
-    
+
     <div style="background:#f8fafc; border:1px solid #d0dcea; border-radius:4px; padding:20px 24px; margin-bottom:20px;">
       <h3 style="margin-top:0; color:#1a4a8a; font-size:16px;">iButton Data Parsing (Hex Payload)</h3>
-      <p style="margin-bottom: 12px;">The 6-byte iButton ROM is structured as follows:</p>
+      <p style="margin-bottom: 12px;">Firmware 2.1.0 and later use <strong>layout v2</strong> (first byte <code>02</code>). The 8 bytes, in the order shown on the Monitor tab:</p>
       <table class="wikitable kv" style="margin-bottom: 0;">
-        <thead><tr><th>Byte Position</th><th>Metric</th><th>Decoding Math</th></tr></thead>
+        <thead><tr><th>Byte</th><th>Metric</th><th>Decoding Math</th></tr></thead>
         <tbody>
-          <tr><td>Byte 1 &amp; 2</td><td>Fuel Liters</td><td>Convert Hex to Decimal, then divide by 10</td></tr>
-          <tr><td>Byte 3</td><td>Fill Percentage</td><td>Convert Hex to Decimal, then divide by 2</td></tr>
-          <tr><td>Byte 4 &amp; 5</td><td>Analog Voltage (Raw)</td><td>Convert Hex to Decimal (millivolts)</td></tr>
-          <tr><td>Byte 6</td><td>Filtered Voltage</td><td>Convert Hex to Decimal, then divide by 10 (volts)</td></tr>
+          <tr><td>[0]</td><td>Layout ID</td><td><code>02</code> = layout v2 (<code>01</code> = firmware 2.0.x, see note below)</td></tr>
+          <tr><td>[1–2]</td><td>Fuel Liters</td><td>Hex to Decimal, then divide by 10</td></tr>
+          <tr><td>[3]</td><td>Fill Percentage</td><td>Hex to Decimal, then divide by 2</td></tr>
+          <tr><td>[4–5]</td><td>Analog Voltage (Raw)</td><td>Hex to Decimal (millivolts)</td></tr>
+          <tr><td>[6]</td><td>Status</td><td>Bit flags — see table below</td></tr>
+          <tr><td>[7]</td><td>Checksum</td><td>Dallas CRC-8 of bytes [0–6]; the tracker uses it to reject corrupted reads</td></tr>
         </tbody>
       </table>
-      
+
+      <h4 style="margin-top:20px; color:#1a4a8a; font-size:14px;">Status Byte [6]</h4>
+      <table class="wikitable kv" style="margin-bottom: 0;">
+        <thead><tr><th>Bit</th><th>Value</th><th>Meaning when set</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td><code>0x01</code></td><td>DIN1 active — ignition ON</td></tr>
+          <tr><td>1</td><td><code>0x02</code></td><td>DIN2 active</td></tr>
+          <tr><td>2</td><td><code>0x04</code></td><td>DIN3 active</td></tr>
+          <tr><td>3</td><td><code>0x08</code></td><td>DIN4 active</td></tr>
+          <tr><td>4</td><td><code>0x10</code></td><td><strong>Reading frozen</strong> (Ignition Hold) — liters and percent are the last valid value, not live</td></tr>
+          <tr><td>5–7</td><td>—</td><td>Reserved (0)</td></tr>
+        </tbody>
+      </table>
+
       <h4 style="margin-top:20px; color:#1a4a8a; font-size:14px;">Example Backend Parsing</h4>
-      <p style="margin-bottom: 8px; font-size: 13px;">If the Teltonika tracker sends AVL ID 78 with the Hex payload: <code>01C54A092E23</code></p>
+      <p style="margin-bottom: 8px; font-size: 13px;">iButton ID <code>0201C593092E0119</code> (ignition ON, reading live):</p>
+      <ul style="font-family: monospace; font-size: 13px; line-height: 1.5; background: #fff; padding: 12px 16px 12px 32px; border: 1px solid #e0e8f0; border-radius: 4px; margin-bottom: 12px;">
+        <li><span style="color:#666;">Byte [0]:</span> 02 &rarr; <strong>layout v2</strong></li>
+        <li><span style="color:#666;">Bytes [1–2]:</span> 01C5 (Hex) = 453 (Dec) &rarr; 453 / 10 = <strong>45.3 Liters</strong></li>
+        <li><span style="color:#666;">Byte [3]:</span> 93 (Hex) = 147 (Dec) &rarr; 147 / 2 = <strong>73.5 % Full</strong></li>
+        <li><span style="color:#666;">Bytes [4–5]:</span> 092E (Hex) = 2350 (Dec) = <strong>2350 mV</strong> (Raw Analog)</li>
+        <li><span style="color:#666;">Byte [6]:</span> 01 &rarr; <strong>Ignition ON</strong>, not frozen</li>
+        <li><span style="color:#666;">Byte [7]:</span> 19 &rarr; checksum</li>
+      </ul>
+      <p style="margin-bottom: 8px; font-size: 13px;">iButton ID <code>0203E8C82FBE106A</code> (ignition OFF, reading held):</p>
       <ul style="font-family: monospace; font-size: 13px; line-height: 1.5; background: #fff; padding: 12px 16px 12px 32px; border: 1px solid #e0e8f0; border-radius: 4px; margin-bottom: 0;">
-        <li><span style="color:#666;">Bytes 1 &amp; 2:</span> 01C5 (Hex) = 453 (Dec) &rarr; 453 / 10 = <strong>45.3 Liters</strong></li>
-        <li><span style="color:#666;">Byte 3:</span> 4A (Hex) = 74 (Dec) &rarr; 74 / 2 = <strong>37.0 % Full</strong></li>
-        <li><span style="color:#666;">Bytes 4 &amp; 5:</span> 092E (Hex) = 2350 (Dec) = <strong>2350 mV</strong> (Raw Analog)</li>
-        <li><span style="color:#666;">Byte 6:</span> 23 (Hex) = 35 (Dec) &rarr; 35 / 10 = <strong>3.5 V</strong> (Filtered Voltage)</li>
+        <li><span style="color:#666;">Bytes [1–2]:</span> 03E8 = 1000 &rarr; <strong>100.0 Liters</strong>; <span style="color:#666;">Byte [3]:</span> C8 = 200 &rarr; <strong>100.0 %</strong></li>
+        <li><span style="color:#666;">Bytes [4–5]:</span> 2FBE = <strong>12222 mV</strong></li>
+        <li><span style="color:#666;">Byte [6]:</span> 10 &rarr; <strong>Ignition OFF, reading frozen</strong> at the last value before ignition OFF</li>
       </ul>
     </div>
 
-    <div class="callout info">
-      Because all data is packed into a single ID, you only need to read <strong>AVL ID 78 (iButton)</strong> on your tracking server, making data transmission extremely efficient!
-    </div>
-    
     <div class="callout warning">
-      <strong>Important:</strong> When configuring your Teltonika tracker's <em>Authorization ID List</em> menu, it is highly advised to change the 1-Wire mode from <strong>Default</strong> to <strong>Matrix (Read ROM)</strong>.
+      <strong>Byte order:</strong> the Teltonika Configurator and some servers show the iButton ID with the bytes <strong>reversed</strong>
+      (checksum first, e.g. <code>6A10BE2FC8E80302</code>). Check which order your server delivers before decoding — in the order above, the layout ID <code>02</code> is the first byte.
+    </div>
+
+    <div class="callout warning">
+      <strong>Upgrading from firmware 2.0.x:</strong> older firmware used layout v1 (first byte <code>01</code>), where byte [6] was the filtered voltage (divide by 10 &rarr; volts).
+      Use the first byte to tell the layouts apart, and update your server decoder before updating units in the field.
+    </div>
+
+    <div class="callout info">
+      Because all data is packed into a single ID, you only need to read <strong>AVL ID 78 (iButton)</strong> on your tracking server.
+      Both 1-Wire modes in the <em>Authorization ID List</em> menu — <strong>Default</strong> and <strong>Matrix (Read ROM)</strong> — work with firmware 2.1.0 and later.
     </div>
 
     <!-- ══ 6. CALIBRATION GUIDE ═════════════════════════════════════════ -->
@@ -441,13 +489,13 @@
       <p>In the web interface at <code>http://192.168.4.1</code>, tap the <strong>Calibration</strong> tab.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Add a point</h4>
-      <p>Tap <strong>+ Add Point</strong>. Enter the current fuel level in liters in the Liters column. Then tap the <strong>⊙ Capture</strong> button — this automatically records the current voltage for you.</p>
+      <p>Tap <strong>+ Add This Reading</strong> — the current voltage is recorded automatically. Enter the current fuel level in liters in the new row.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Add fuel and repeat</h4>
       <p>Add fuel to a new known level. Wait a few seconds for the reading to settle, then repeat Step 3. Aim for at least 4 points — for example: empty, quarter, half, three-quarter, and full.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">5. Calculate</h4>
-      <p>Once all points are entered, tap <strong>Calculate Polynomial</strong>. The device computes the fuel curve and saves it automatically.</p>
+      <p>Once all points are entered, tap <strong>Calculate Calibration</strong>. The device computes the fuel curve and saves it automatically.</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">6. Verify</h4>
       <p style="margin-bottom:0;">Check the Monitor tab to confirm the Liters reading matches your actual fuel level. Add more points and recalculate if needed.</p>
@@ -472,6 +520,7 @@
     <table class="wikitable">
       <thead><tr><th>Preset</th><th>Best For</th></tr></thead>
       <tbody>
+        <tr><td><strong>None</strong></td><td>Raw sensor voltage with no smoothing (testing and calibration checks)</td></tr>
         <tr><td><strong>Responsive</strong></td><td>Calm roads, fast changes, low vibration environments</td></tr>
         <tr><td><strong>Balanced</strong></td><td>Most vehicles and standard road conditions (Default)</td></tr>
         <tr><td><strong>Stable</strong></td><td>Heavy vibration, off-road driving, or rough terrain</td></tr>
@@ -485,36 +534,58 @@
     <!-- ══ 8. OTA FIRMWARE UPDATE ════════════════════════════════════════ -->
     <h2 id="ota">8. Firmware Update</h2>
     <p>
-      Firmware updates can be installed wirelessly from the web interface — no cable or site visit required.
-      Your supplier will provide the update file when a new version is available.
+      Firmware can be updated wirelessly from the web interface — no cable or site visit required — either
+      directly from the internet (<strong>Remote Cloud Update</strong>) or from a file provided by your supplier (<strong>Manual Firmware Flash</strong>).
     </p>
 
+    <h3 id="ota-cloud">8.1 Remote Cloud Update</h3>
+    <p>You need a 2.4 GHz WiFi network with internet access nearby (a site router or a phone hotspot).</p>
+    <div style="background:#f8fafc; border:1px solid #d0dcea; border-radius:4px; padding:20px 24px; margin-bottom:20px;">
+      <h4 style="margin-top:0; color:#1a4a8a; font-size:14px;">1. Open the System tab</h4>
+      <p>Connect to <code>DL02-XXXX</code>, open <code>http://192.168.4.1</code> and tap the <strong>System</strong> tab.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Tap Check for Updates</h4>
+      <p>The device enters <strong>Update Mode</strong> and scans for WiFi networks. In Update Mode the fuel readings, 1-Wire output and BLE are paused and the LED blinks twice per second.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Connect to the internet</h4>
+      <p>Choose your WiFi network from <em>Available Networks</em> (or enter its name manually), enter its password and tap <strong>Connect</strong>. Once connected, the device checks for a newer release automatically.</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Install</h4>
+      <p>If a new version is available, its version and notes are shown. Tap <strong>Upload Firmware</strong> under the release notes and confirm. The LED flashes rapidly while the firmware downloads (about 20 s on a good connection).</p>
+
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">5. Wait for reboot</h4>
+      <p style="margin-bottom:0;">The device restarts on the new firmware by itself. Reconnect to the DL-02 hotspot and check the version on the System tab.</p>
+    </div>
+    <div class="callout info">
+      If no update is needed, tap <strong>Cancel &amp; Resume Normal Operation</strong>. Leaving the System tab, reloading the page, or 10 minutes without activity on the update screen also returns the device to normal operation.
+      After a successful update the router WiFi password is erased from the device; enter it again for the next update.
+    </div>
+
+    <h3 id="ota-manual">8.2 Manual Firmware Flash (.bin)</h3>
     <div style="background:#f8fafc; border:1px solid #d0dcea; border-radius:4px; padding:20px 24px; margin-bottom:20px;">
       <h4 style="margin-top:0; color:#1a4a8a; font-size:14px;">1. Obtain the update file</h4>
       <p>Contact your supplier to receive the firmware update file (<code>.bin</code> format).</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Connect to the DL-02 hotspot</h4>
-      <p>Connect to <code>DL02-XXYY</code> and open <code>http://192.168.4.1</code> in your browser.</p>
+      <p>Connect to <code>DL02-XXXX</code> and open <code>http://192.168.4.1</code> in your browser.</p>
 
-      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Go to the System tab</h4>
-      <p>Tap the <strong>System</strong> tab at the bottom of the screen.</p>
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Select the update file</h4>
+      <p>On the <strong>System</strong> tab, under <em>Manual Firmware Flash (.bin)</em>, tap <strong>Choose File</strong> and select the <code>.bin</code> file.</p>
 
-      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Select the update file</h4>
-      <p>Under <em>Firmware Update</em>, tap <strong>Choose File</strong> and select the <code>.bin</code> file provided by your supplier.</p>
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">4. Upload and install</h4>
+      <p>Tap <strong>Upload Firmware</strong>. A progress bar shows the status. Do not close the browser or remove power during this step.</p>
 
-      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">5. Upload and install</h4>
-      <p>Tap <strong>↑ Upload &amp; Flash</strong>. A progress bar shows the status. Do not close the browser or remove power during this step.</p>
-
-      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">6. Wait for reboot</h4>
-      <p style="margin-bottom:0;">The device reboots automatically after the upload completes. The page reloads on its own.</p>
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">5. Wait for reboot</h4>
+      <p style="margin-bottom:0;">The device reboots automatically after the upload completes.</p>
     </div>
 
     <div class="callout danger">
-      Never disconnect power while the upload progress bar is running.
+      Never disconnect power while an update is downloading or uploading.
       Interrupting the update may require the device to be returned to your supplier for service.
     </div>
     <div class="callout success">
-      All calibration data, tank capacity, and settings are stored separately and are never affected by a firmware update.
+      Calibration data, tank capacity and settings are stored separately and are kept through a firmware update.
+      If the new firmware fails to start correctly, the device automatically returns to the previous version.
     </div>
 
     <!-- ══ 9. FACTORY RESET ══════════════════════════════════════════════ -->
@@ -526,7 +597,7 @@
     </p>
 
     <div class="callout danger">
-      A factory reset deletes all saved calibration data, tank capacity, smoothing settings, and the custom hotspot password.
+      A factory reset deletes all saved calibration data, tank capacity, smoothing and ignition settings, the custom hotspot password and the saved router WiFi.
       You will need to recalibrate the device from scratch afterwards.
     </div>
 
@@ -535,8 +606,8 @@
       <h4 style="margin-top:0; color:#1a4a8a; font-size:14px;">1. Ensure the device is powered on and running normally</h4>
       <p>Do not hold the button while connecting power.</p>
 
-      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Press and hold the BOOT button for 3 seconds</h4>
-      <p>The button is labelled <strong>BOOT</strong> on the device.</p>
+      <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">2. Press and hold the BOOT button for 5 seconds</h4>
+      <p>The button is labelled <strong>BOOT</strong> on the device. The LED turns solid when the reset starts. Releasing earlier cancels the reset (a short press only turns the WiFi hotspot back on).</p>
 
       <h4 style="color:#1a4a8a; font-size:14px; margin-top:24px;">3. Wait for the device to reboot</h4>
       <p>The device erases all settings and restarts automatically.</p>
@@ -549,11 +620,13 @@
     <table class="wikitable" style="width:auto;">
       <thead><tr><th>Setting</th><th>Default Value</th></tr></thead>
       <tbody>
-        <tr><td>Hotspot Name (SSID)</td><td><code>DL02-XXYY</code> (unique to the device)</td></tr>
+        <tr><td>Hotspot Name (SSID)</td><td><code>DL02-XXXX</code> (unique to the device)</td></tr>
         <tr><td>Hotspot Password</td><td><code>duraconfig</code></td></tr>
         <tr><td>Web Interface URL</td><td><code>http://192.168.4.1</code></td></tr>
         <tr><td>Tank Capacity</td><td>100 L</td></tr>
         <tr><td>Smoothing Level</td><td>Balanced</td></tr>
+        <tr><td>WiFi Timeout</td><td>60 minutes</td></tr>
+        <tr><td>DIN1 Ignition Input</td><td>Enabled</td></tr>
         <tr><td>Calibration</td><td>Cleared — recalibration required</td></tr>
       </tbody>
     </table>
@@ -563,12 +636,16 @@
     <table class="wikitable plain">
       <thead><tr><th>Problem</th><th>What to Check</th></tr></thead>
       <tbody>
-        <tr><td>Tracker shows no fuel sensor data</td><td>Confirm the sensor IDs from the Monitor tab are entered correctly in the Teltonika Configurator. Check that the 1-Wire cable is connected properly.</td></tr>
+        <tr><td>Tracker shows no fuel sensor data</td><td>Confirm iButton reading (AVL ID 78) is enabled in the Teltonika Configurator and the 1-Wire cable is connected properly. The <strong>1-Wire OK</strong> badge in the web interface shows whether the tracker is reading the device.</td></tr>
+        <tr><td>Tracker sometimes shows iButton <code>0000000000000000</code></td><td>Update the DL-02 to firmware 2.1.0 or later (<a href="#ota">Section 8</a>) — earlier versions could miss tracker reads while the tracker was busy sending data.</td></tr>
+        <tr><td>Fuel reading does not change / HOLD badge stays on</td><td>The reading is frozen by Ignition Hold. Check the <strong>IGN</strong> badge: if it shows OFF while the ignition is on, check the DIN1 wiring, or set <strong>DIN1 Ignition Input</strong> to Disabled if DIN1 is not connected.</td></tr>
+        <tr><td>LED blinks twice per second, no readings</td><td>The device is in Update Mode. Tap <strong>Cancel &amp; Resume Normal Operation</strong> on the System tab, reload the page, or wait 10 minutes — it returns to normal operation by itself.</td></tr>
+        <tr><td>DL02 hotspot is not visible</td><td>The hotspot turns off after the WiFi Timeout (default 60 minutes). Briefly press the <strong>BOOT</strong> button to turn it back on.</td></tr>
         <tr><td>Fuel reading shows 0 or is clearly wrong</td><td>The device may not be calibrated yet. Open the Calibration tab and follow the calibration procedure in <a href="#calibration">Section 6</a>.</td></tr>
         <tr><td>Fuel reading jumps around</td><td>Increase the smoothing level in the Settings tab. Try <strong>Balanced</strong> or <strong>Stable</strong>.</td></tr>
-        <tr><td>Cannot connect to the web interface</td><td>Make sure your phone is connected to the <code>DL02-XXYY</code> WiFi network — not your home or office network. Then open <code>http://192.168.4.1</code>.</td></tr>
+        <tr><td>Cannot connect to the web interface</td><td>Make sure your phone is connected to the <code>DL02-XXXX</code> WiFi network — not your home or office network. Then open <code>http://192.168.4.1</code>.</td></tr>
         <tr><td>Forgot the hotspot password</td><td>Perform a factory reset (see <a href="#factory-reset">Section 9</a>). The default password <code>duraconfig</code> will be restored.</td></tr>
-        <tr><td>Firmware update fails or shows an error</td><td>Stay close to the device during the update. Ensure the <code>.bin</code> file was provided by your supplier and has not been renamed or modified.</td></tr>
+        <tr><td>Firmware update fails or shows an error</td><td>Stay close to the device during the update. For Remote Cloud Update, check that the WiFi network has internet access and is 2.4 GHz; if the network list shows "Scan failed", tap <strong>Rescan</strong> or enter the network name manually. For a manual flash, ensure the <code>.bin</code> file was provided by your supplier and has not been modified.</td></tr>
         <tr><td>Reading is inaccurate after calibration</td><td>Add more calibration points across the full tank range (empty, quarter, half, three-quarter, full) and recalculate. Always calibrate on level ground.</td></tr>
         <tr><td>Device appears unresponsive</td><td>Use the <strong>Reboot Device</strong> button in the System tab, or remove and restore power to the device.</td></tr>
       </tbody>
@@ -579,25 +656,49 @@
     <table class="spec-table">
       <tbody>
         <tr><td>Model</td><td>DuraLink DL-02</td></tr>
-        <tr><td>Firmware Version</td><td>v2.0.1</td></tr>
+        <tr><td>Firmware Version</td><td>v2.1.1</td></tr>
         <tr><td>Input Voltage</td><td>9V - 26V</td></tr>
         <tr><td>Compatible Trackers</td><td>Any Teltonika Telematics devices with a 1-wire interface</td></tr>
-        <tr><td>Sensor Outputs</td><td>1 × iButton (DS1990A) 1-Wire — Fuel Level (L), Voltage Reference, Fill Percent (%) packed into 6-byte ID</td></tr>
-        <tr><td>Measurement Range</td><td>0–125 liters (Sensor 1) · 0–100% fill (Sensor 3)</td></tr>
+        <tr><td>Sensor Outputs</td><td>1 × iButton (DS1990A) 1-Wire — Fuel Level (L), Fill Percent (%), Raw Voltage (mV) and Status packed into the ID (layout v2) · Bluetooth LE beacon with the same data</td></tr>
+        <tr><td>Measurement Range</td><td>0–6553.5 liters (0.1 L resolution) · 0–100% fill (0.5% resolution)</td></tr>
+        <tr><td>Digital Inputs</td><td>DIN1 (ignition, used for Ignition Hold) and DIN2–DIN4, reported in the status byte</td></tr>
         <tr><td>Calibration</td><td>Up to 10 points, cubic polynomial curve-fit. Export/import supported.</td></tr>
-        <tr><td>Signal Smoothing</td><td>3 presets — Responsive, Balanced (default), Stable</td></tr>
-        <tr><td>Wireless</td><td>WiFi 802.11 b/g/n, 2.4 GHz</td></tr>
-        <tr><td>Web Interface URL</td><td>http://192.168.4.1</td></tr>
-        <tr><td>Default Hotspot Name</td><td>DL02-XXYY (unique per device — last 2 bytes of MAC address)</td></tr>
+        <tr><td>Signal Smoothing</td><td>4 presets — None, Responsive, Balanced (default), Stable</td></tr>
+        <tr><td>Wireless</td><td>WiFi 802.11 b/g/n, 2.4 GHz · Bluetooth LE</td></tr>
+        <tr><td>Web Interface URL</td><td>http://192.168.4.1 or http://dl02-&lt;serial&gt;.local</td></tr>
+        <tr><td>Default Hotspot Name</td><td>DL02-XXXX (unique per device — last 2 bytes of MAC address)</td></tr>
+        <tr><td>WiFi Timeout</td><td>Hotspot off after 60 min without web activity (adjustable, 0 = never); a short BOOT press turns it back on</td></tr>
         <tr><td>Default Hotspot Password</td><td>duraconfig</td></tr>
         <tr><td>Settings Storage</td><td>NVS (Retained across power cycles and firmware updates)</td></tr>
-        <tr><td>Factory Reset</td><td>BOOT button — hold 3 seconds while device is powered on</td></tr>
-        <tr><td>Firmware Updates</td><td>Wireless (OTA) via browser with rollback protection</td></tr>
+        <tr><td>Factory Reset</td><td>BOOT button — hold 5 seconds while device is powered on</td></tr>
+        <tr><td>Firmware Updates</td><td>Remote Cloud Update over the internet, or manual .bin upload via browser — both with rollback protection</td></tr>
       </tbody>
     </table>
 
     <!-- ══ 12. CHANGELOG ═════════════════════════════════════════════════ -->
     <h2 id="changelog">12. Firmware Changelog</h2>
+
+    <div style="margin-bottom: 20px;">
+      <h3 style="margin-top: 0; padding-bottom: 4px; border-bottom: 1px solid #e0e8f0; color: #1a4a8a; font-size: 15px;">v2.1.1</h3>
+      <ul style="margin-left: 20px; color: #333; line-height: 1.6; font-size: 13px;">
+        <li><strong>Fix:</strong> The device could stay in Update Mode (fuel data to the tracker paused) after leaving the update screen without pressing Cancel. It now returns to normal operation when you leave the System tab, reload the page, or after 10 minutes.</li>
+        <li><strong>Fix:</strong> The WiFi network scan for Remote Cloud Update no longer fails intermittently.</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h3 style="margin-top: 0; padding-bottom: 4px; border-bottom: 1px solid #e0e8f0; color: #1a4a8a; font-size: 15px;">v2.1.0</h3>
+      <ul style="margin-left: 20px; color: #333; line-height: 1.6; font-size: 13px;">
+        <li><strong>Fix:</strong> Stable iButton reads — the tracker no longer occasionally reports <code>0000000000000000</code>, including while it is busy sending data. Both 1-Wire modes (Default and Matrix Read ROM) are supported.</li>
+        <li><strong>Changed:</strong> iButton layout v2 — first byte <code>02</code>; byte [6] is now the Status byte (ignition, digital inputs, hold flag) instead of the filtered voltage. Update server decoders (<a href="#onewire">Section 5</a>).</li>
+        <li><strong>New:</strong> Ignition Hold — the reading is frozen while ignition (DIN1) is OFF.</li>
+        <li><strong>New:</strong> Bluetooth LE beacon with fuel data, configuration and status.</li>
+        <li><strong>New:</strong> Remote Cloud Update, Configuration Backup (export / import), and a single SAVE button on the Settings tab.</li>
+        <li><strong>New:</strong> The WiFi hotspot turns off after a configurable inactivity timeout; a short BOOT press turns it back on.</li>
+        <li><strong>Changed:</strong> Factory reset is now a 5-second BOOT press.</li>
+      </ul>
+    </div>
+
     
     <div style="margin-bottom: 20px;">
       <h3 style="margin-top: 0; padding-bottom: 4px; border-bottom: 1px solid #e0e8f0; color: #1a4a8a; font-size: 15px;">v2.0.1</h3>
@@ -621,7 +722,7 @@
       <h3 style="margin-top: 0; padding-bottom: 4px; border-bottom: 1px solid #e0e8f0; color: #1a4a8a; font-size: 15px;">v1.2.0</h3>
       <ul style="margin-left: 20px; color: #333; line-height: 1.6; font-size: 13px;">
         <li><strong>Product Renamed:</strong> Now officially DuraLink DL-02.</li>
-        <li><strong>Security:</strong> Hotspot name is now unique per device (e.g. <code>DL02-XXYY</code>).</li>
+        <li><strong>Security:</strong> Hotspot name is now unique per device (e.g. <code>DL02-XXXX</code>).</li>
         <li><strong>New:</strong> Filter mode added with presets (Responsive, Balanced, Stable).</li>
         <li><strong>UI Redesign:</strong> Completely new dark-themed, mobile-friendly interface with tabbed navigation.</li>
       </ul>
@@ -649,7 +750,7 @@
 <div id="footer">
   <p>
     <strong>DuraLink DL-02</strong> Fuel Level Monitor &nbsp;|&nbsp; User Manual &nbsp;|&nbsp;
-    &copy; 2026 <strong>Maruko Dura Solusi</strong>
+    &copy; 2026 <strong>Maruko Dura Solusi</strong> &nbsp;|&nbsp; Last updated: 8 November 2026
   </p>
   <p style="margin-top:6px;">
     Technical support: <a href="mailto:support@maruko.co.id">support@maruko.co.id</a>

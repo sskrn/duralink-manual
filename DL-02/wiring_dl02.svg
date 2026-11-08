@@ -1,156 +1,177 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1060" viewBox="0 0 1500 1060" font-family="'Segoe UI', Arial, Helvetica, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1500" height="1220" viewBox="0 0 1500 1220" font-family="'Segoe UI', Arial, Helvetica, sans-serif">
   <title>DuraLink DL-02 to Teltonika FMx1xx / FMC650 wiring diagram</title>
-  <desc>DL-02 wires: POWER and GND to the 10-30 V DC supply shared with the tracker, AIN GND REF and AIN+ to the analog fuel sensor, 1-WIRE to the tracker 1-Wire input, DIN1 to the vehicle ignition (ACC) line.</desc>
+  <desc>DL-02 wires: POWER (red) and GND (black) to the 10-30 V DC supply shared with the tracker, AIN GND REF (dark brown) and AIN+ (yellow) to the analog fuel sensor, 1-WIRE (green) to the tracker 1-Wire input, DIN1 (gold) to the vehicle ignition (ACC) line.</desc>
   <defs>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#dbe3f0"/></pattern>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f2a4a"/><stop offset="1" stop-color="#1d4f9e"/></linearGradient>
+    <linearGradient id="band" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0f2a4a"/><stop offset="1" stop-color="#1f5fd0"/></linearGradient>
+    <linearGradient id="probe" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfdcf2"/><stop offset=".5" stop-color="#f4f8ff"/><stop offset="1" stop-color="#b9cbe8"/></linearGradient>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f2a4a" flood-opacity=".14"/></filter>
+    <clipPath id="dlClip"><rect x="150" y="130" width="470" height="400" rx="20"/></clipPath>
+    <clipPath id="tkClip"><rect x="330" y="790" width="600" height="390" rx="20"/></clipPath>
     <style>
-      .box   { fill: #ffffff; stroke: #1f5fd0; stroke-width: 3; }
-      .note  { fill: #f4f8ff; stroke: #1f5fd0; stroke-width: 2; stroke-dasharray: 8 6; }
-      .ttl   { fill: #1f5fd0; font-size: 22px; font-weight: 600; letter-spacing: .5px; }
-      .lbl   { font-size: 22px; font-weight: 600; }
-      .small { font-size: 18px; fill: #333; }
-      .w     { fill: none; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
-      .red { stroke: #e02020; } .blk { stroke: #111; } .org { stroke: #f08c00; }
-      .yel { stroke: #d4b000; } .grn { stroke: #1a9e2a; } .pur { stroke: #7b3fe4; }
-      .tr { fill: #e02020; } .tb { fill: #111; } .to { fill: #f08c00; }
-      .ty { fill: #b89800; } .tg { fill: #1a9e2a; } .tp { fill: #7b3fe4; }
+      .card { fill: #ffffff; stroke: #c9d6ea; stroke-width: 1.5; }
+      .ttl  { fill: #1f5fd0; font-size: 19px; font-weight: 700; letter-spacing: 1.5px; }
+      .sub  { fill: #5b6b85; font-size: 16px; }
+      .lbl  { fill: #1f2937; font-size: 21px; font-weight: 600; }
+      .tag  { fill: #1f2937; font-size: 16px; font-weight: 700; letter-spacing: .8px; }
+      .h    { fill: none; stroke: #f6f8fc; stroke-width: 13; stroke-linejoin: round; }
+      .w    { fill: none; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
+      .red { stroke: #e02424; } .blk { stroke: #1a1a1a; } .brn { stroke: #5b3a1e; }
+      .yel { stroke: #ffd60a; } .yed { stroke: #c9a400; stroke-width: 8; }
+      .grn { stroke: #16a34a; } .gld { stroke: #b8860b; }
     </style>
+    <!-- wire routes -->
+    <path id="r1" d="M626 180 H1080 V905 H910"/>
+    <path id="k1" d="M626 240 H1040 V1005 H910"/>
+    <path id="r2" d="M270 650 H1080"/>
+    <path id="k2" d="M270 700 H1040"/>
+    <path id="b1" d="M626 300 H1150 V445 H1210"/>
+    <path id="y1" d="M626 360 H1115 V495 H1210"/>
+    <path id="g1" d="M626 420 H990 V1100 H910"/>
+    <path id="d1" d="M626 480 H950 V750 H300 V890 H227"/>
+    <path id="r3" d="M70 740 V890 H83"/>
   </defs>
 
-  <rect width="1500" height="1060" fill="#ffffff"/>
-  <text x="750" y="58" text-anchor="middle" font-size="40" font-weight="700" fill="#1a4a8a">DuraLink DL-02 to Teltonika FMx1xx / FMC650 — Wiring Diagram</text>
+  <!-- background -->
+  <rect width="1500" height="1220" fill="#f6f8fc"/>
+  <rect width="1500" height="1220" fill="url(#dots)"/>
 
-  <!-- ═══ DL-02 ═══ -->
-  <rect class="box" x="60" y="100" width="560" height="420" rx="18"/>
-  <text x="110" y="235" font-size="64" font-weight="800" fill="#111">Dura<tspan fill="#1f5fd0">Link</tspan></text>
-  <rect x="110" y="262" width="150" height="50" rx="12" fill="#111"/>
-  <text x="185" y="297" text-anchor="middle" font-size="30" font-weight="700" fill="#fff">DL-02</text>
-  <text x="280" y="297" font-size="24" fill="#333">Fuel Level Monitor</text>
-  <text x="110" y="460" class="small">Wire colours as on the DL-02 cable</text>
+  <!-- header -->
+  <text x="750" y="62" text-anchor="middle" font-size="38" font-weight="700" fill="#0f2a4a">DuraLink DL-02 <tspan fill="#1f5fd0">→</tspan> Teltonika FMx1xx / FMC650</text>
+  <text x="750" y="96" text-anchor="middle" font-size="19" fill="#5b6b85" letter-spacing="1">WIRING DIAGRAM  ·  ANALOG FUEL SENSOR  ·  1-WIRE (iBUTTON)  ·  DIN1 IGNITION</text>
 
-  <!-- DL-02 terminals (y = 150 + 60·n) -->
-  <g>
-    <rect x="590" y="132" width="36" height="36" rx="4" fill="#fff" stroke="#e02020" stroke-width="3"/><rect x="600" y="142" width="16" height="16" fill="#e02020"/>
-    <rect x="590" y="192" width="36" height="36" rx="4" fill="#fff" stroke="#111" stroke-width="3"/><rect x="600" y="202" width="16" height="16" fill="#111"/>
-    <rect x="590" y="252" width="36" height="36" rx="4" fill="#fff" stroke="#f08c00" stroke-width="3"/><rect x="600" y="262" width="16" height="16" fill="#f08c00"/>
-    <rect x="590" y="312" width="36" height="36" rx="4" fill="#fff" stroke="#d4b000" stroke-width="3"/><rect x="600" y="322" width="16" height="16" fill="#d4b000"/>
-    <rect x="590" y="372" width="36" height="36" rx="4" fill="#fff" stroke="#1a9e2a" stroke-width="3"/><rect x="600" y="382" width="16" height="16" fill="#1a9e2a"/>
-    <rect x="590" y="432" width="36" height="36" rx="4" fill="#fff" stroke="#7b3fe4" stroke-width="3"/><rect x="600" y="442" width="16" height="16" fill="#7b3fe4"/>
+  <!-- ═══ Cards ═══ -->
+  <g filter="url(#sh)">
+    <rect x="150" y="130" width="470" height="400" rx="20" fill="url(#navy)"/>
+    <rect class="card" x="1190" y="130" width="270" height="400" rx="18"/>
+    <rect class="card" x="40" y="580" width="230" height="160" rx="16"/>
+    <rect class="card" x="40" y="780" width="230" height="170" rx="16"/>
+    <rect class="card" x="330" y="790" width="600" height="390" rx="20"/>
+    <rect class="card" x="1130" y="580" width="330" height="270" rx="16"/>
+    <rect x="1130" y="870" width="330" height="230" rx="16" fill="#eef4ff" stroke="#9db8e6" stroke-width="1.5" stroke-dasharray="7 5"/>
   </g>
-  <text x="660" y="158" class="lbl tr">POWER (VCC)</text>
-  <text x="660" y="218" class="lbl tb">GND</text>
-  <text x="660" y="278" class="lbl to">AIN GND REF</text>
-  <text x="660" y="338" class="lbl ty">AIN+</text>
-  <text x="660" y="398" class="lbl tg">1-WIRE</text>
-  <text x="660" y="458" class="lbl tp">DIN1 (IGNITION)</text>
 
-  <!-- ═══ Analog fuel sensor ═══ -->
-  <rect class="box" x="1190" y="100" width="270" height="420" rx="14"/>
-  <text x="1325" y="140" text-anchor="middle" class="ttl">ANALOG FUEL SENSOR</text>
-  <g fill="#e8f0ff" stroke="#1f5fd0" stroke-width="3">
-    <rect x="1255" y="170" width="140" height="28" rx="8"/>
-    <rect x="1290" y="198" width="70" height="22"/>
-    <rect x="1305" y="220" width="40" height="150" rx="6"/>
+  <!-- DL-02 -->
+  <g clip-path="url(#dlClip)">
+    <circle cx="600" cy="140" r="190" fill="#ffffff" opacity=".05"/>
+    <circle cx="600" cy="140" r="120" fill="#ffffff" opacity=".05"/>
   </g>
-  <rect x="1210" y="410" width="30" height="30" rx="4" fill="#fff" stroke="#f08c00" stroke-width="3"/>
-  <rect x="1210" y="460" width="30" height="30" rx="4" fill="#fff" stroke="#d4b000" stroke-width="3"/>
-  <text x="1255" y="434" class="lbl to">GND REF</text>
-  <text x="1255" y="484" class="lbl ty">ANALOG OUT</text>
+  <text x="190" y="265" font-size="66" font-weight="800" fill="#ffffff">Dura<tspan fill="#7fb2ff">Link</tspan></text>
+  <rect x="190" y="292" width="150" height="52" rx="12" fill="#ffffff"/>
+  <text x="265" y="328" text-anchor="middle" font-size="30" font-weight="800" fill="#0f2a4a">DL-02</text>
+  <text x="358" y="327" font-size="23" fill="#d6e2f5">Fuel Level Monitor</text>
+  <text x="190" y="495" font-size="15" fill="#9fb6d8">Wire colours as on the DL-02 cable</text>
 
-  <!-- ═══ Power supply ═══ -->
-  <rect class="box" x="50" y="560" width="210" height="150" rx="12"/>
-  <text x="155" y="595" text-anchor="middle" class="ttl">VEHICLE POWER</text>
-  <rect x="100" y="615" width="110" height="55" rx="5" fill="#fff" stroke="#111" stroke-width="3"/>
-  <rect x="115" y="607" width="20" height="8" fill="#111"/><rect x="175" y="607" width="20" height="8" fill="#111"/>
-  <text x="125" y="652" font-size="26" font-weight="700">+</text><text x="178" y="652" font-size="26" font-weight="700">−</text>
-  <text x="155" y="700" text-anchor="middle" font-size="20" font-weight="600">10–30 V DC</text>
-
-  <!-- ═══ Ignition switch ═══ -->
-  <rect class="box" x="50" y="750" width="210" height="150" rx="12"/>
-  <text x="155" y="785" text-anchor="middle" class="ttl">IGNITION</text>
-  <text x="155" y="808" text-anchor="middle" class="small">key switch / ACC</text>
-  <!-- switch symbol -->
-  <circle cx="100" cy="855" r="7" fill="#fff" stroke="#111" stroke-width="3"/>
-  <circle cx="210" cy="855" r="7" fill="#fff" stroke="#111" stroke-width="3"/>
-  <line x1="106" y1="851" x2="195" y2="828" stroke="#111" stroke-width="4" stroke-linecap="round"/>
-  <text x="100" y="890" text-anchor="middle" font-size="15" fill="#333">BATT +</text>
-  <text x="210" y="890" text-anchor="middle" font-size="15" fill="#333">IGN / ACC</text>
-
-  <!-- ═══ Teltonika ═══ -->
-  <rect class="box" x="330" y="780" width="420" height="230" rx="10"/>
-  <text x="495" y="860" text-anchor="middle" font-size="30" font-weight="800" fill="#1f5fd0" font-style="italic">TELTONIKA</text>
-  <text x="495" y="922" text-anchor="middle" font-size="34" font-weight="700" fill="#1a4a8a">FMx1xx / FMC650</text>
-  <text x="495" y="962" text-anchor="middle" class="small">GPS tracker</text>
-  <rect x="660" y="802" width="36" height="36" rx="4" fill="#fff" stroke="#e02020" stroke-width="3"/><rect x="670" y="812" width="16" height="16" fill="#e02020"/>
-  <rect x="660" y="872" width="36" height="36" rx="4" fill="#fff" stroke="#111" stroke-width="3"/><rect x="670" y="882" width="16" height="16" fill="#111"/>
-  <rect x="660" y="942" width="36" height="36" rx="4" fill="#fff" stroke="#1a9e2a" stroke-width="3"/><rect x="670" y="952" width="16" height="16" fill="#1a9e2a"/>
-  <text x="770" y="815" class="lbl tr">VCC</text>
-  <text x="770" y="895" class="lbl tb">GND</text>
-  <text x="770" y="955" class="lbl tg">1-WIRE</text>
-  <text x="770" y="980" class="small">input (iButton)</text>
-
-  <!-- ═══ Wires ═══ -->
-  <!-- POWER bus x=1080 -->
-  <polyline class="w red" points="830,150 1080,150 1080,820 830,820"/>
-  <polyline class="w red" points="260,615 1080,615"/>
-  <line class="w red" x1="696" y1="820" x2="760" y2="820"/>
-  <line class="w red" x1="626" y1="150" x2="650" y2="150"/>
-  <!-- battery + to ignition switch -->
-  <polyline class="w red" points="80,710 80,855 93,855"/>
-  <!-- GND bus x=1040 -->
-  <polyline class="w blk" points="725,210 1040,210 1040,890 830,890"/>
-  <polyline class="w blk" points="260,665 1040,665"/>
-  <line class="w blk" x1="696" y1="890" x2="760" y2="890"/>
-  <line class="w blk" x1="626" y1="210" x2="650" y2="210"/>
-  <!-- AIN GND REF -->
-  <polyline class="w org" points="830,270 1150,270 1150,425 1210,425"/>
-  <line class="w org" x1="626" y1="270" x2="650" y2="270"/>
-  <!-- AIN+ -->
-  <polyline class="w yel" points="725,330 1115,330 1115,475 1210,475"/>
-  <line class="w yel" x1="626" y1="330" x2="650" y2="330"/>
-  <!-- 1-WIRE x=990 -->
-  <polyline class="w grn" points="755,390 990,390 990,960 870,960"/>
-  <line class="w grn" x1="696" y1="960" x2="760" y2="960"/>
-  <line class="w grn" x1="626" y1="390" x2="650" y2="390"/>
-  <!-- DIN1 x=950 -->
-  <polyline class="w pur" points="860,450 950,450 950,730 290,730 290,855 217,855"/>
-  <line class="w pur" x1="626" y1="450" x2="650" y2="450"/>
-
-  <!-- wire crossings without connection: small white gaps -->
-  <g fill="#fff">
-    <rect x="943" y="607" width="14" height="16"/><rect x="943" y="657" width="14" height="16"/>
-    <rect x="983" y="607" width="14" height="16"/><rect x="983" y="657" width="14" height="16"/>
-    <rect x="983" y="722" width="14" height="16"/>
+  <!-- Analog fuel sensor -->
+  <text x="1325" y="170" text-anchor="middle" class="ttl">FUEL SENSOR</text>
+  <text x="1325" y="192" text-anchor="middle" class="sub">analog output</text>
+  <rect x="1225" y="250" width="200" height="150" rx="12" fill="#ffffff" stroke="#9fb3d1" stroke-width="2"/>
+  <path d="M1227 320 q25 -8 50 0 t50 0 t50 0 t46 0 V388 a10 10 0 0 1 -10 10 H1237 a10 10 0 0 1 -10 -10 Z" fill="#ffe7a3" opacity=".9"/>
+  <g stroke="#1f5fd0" stroke-width="2.5">
+    <rect x="1265" y="205" width="120" height="24" rx="7" fill="#e8f0ff"/>
+    <rect x="1300" y="229" width="50" height="16" fill="#e8f0ff"/>
+    <rect x="1310" y="245" width="30" height="145" rx="6" fill="url(#probe)"/>
   </g>
-  <line class="w pur" x1="950" y1="600" x2="950" y2="680"/>
-  <line class="w grn" x1="990" y1="600" x2="990" y2="745"/>
+  <g stroke="#1f5fd0" stroke-width="2" opacity=".5"><line x1="1340" y1="280" x2="1350" y2="280"/><line x1="1340" y1="310" x2="1350" y2="310"/><line x1="1340" y1="340" x2="1350" y2="340"/><line x1="1340" y1="370" x2="1350" y2="370"/></g>
+  <text x="1255" y="452" class="lbl">GND REF</text>
+  <text x="1255" y="502" class="lbl">ANALOG OUT</text>
 
-  <!-- junction dots -->
-  <circle cx="1080" cy="615" r="8" fill="#e02020"/>
-  <circle cx="1040" cy="665" r="8" fill="#111"/>
+  <!-- Vehicle power -->
+  <text x="155" y="614" text-anchor="middle" class="ttl">VEHICLE POWER</text>
+  <rect x="115" y="633" width="18" height="9" rx="2" fill="#1a1a1a"/><rect x="177" y="633" width="18" height="9" rx="2" fill="#1a1a1a"/>
+  <rect x="95" y="642" width="120" height="52" rx="7" fill="#f4f6fa" stroke="#1a1a1a" stroke-width="2.5"/>
+  <text x="124" y="677" text-anchor="middle" font-size="26" font-weight="700" fill="#e02424">+</text>
+  <text x="186" y="677" text-anchor="middle" font-size="26" font-weight="700" fill="#1a1a1a">−</text>
+  <text x="155" y="724" text-anchor="middle" font-size="18" font-weight="600" fill="#1f2937">10–30 V DC</text>
+
+  <!-- Ignition -->
+  <text x="155" y="815" text-anchor="middle" class="ttl">IGNITION</text>
+  <text x="155" y="839" text-anchor="middle" class="sub">key switch / ACC</text>
+
+  <!-- Teltonika -->
+  <rect x="330" y="790" width="600" height="80" fill="url(#band)" clip-path="url(#tkClip)"/>
+  <text x="365" y="843" font-size="36" font-weight="800" font-style="italic" fill="#ffffff" letter-spacing="1">TELTONIKA</text>
+  <text x="900" y="838" text-anchor="end" font-size="15" font-weight="600" fill="#bcd0ee" letter-spacing="2">GPS TRACKER</text>
+  <path d="M530 895 c-16 0 -29 13 -29 29 c0 21 29 51 29 51 s29 -30 29 -51 c0 -16 -13 -29 -29 -29 z" fill="#1f5fd0"/>
+  <circle cx="530" cy="924" r="10" fill="#ffffff"/>
+  <text x="530" y="1025" text-anchor="middle" font-size="40" font-weight="800" fill="#0f2a4a">FMx1xx / FMC650</text>
+  <text x="530" y="1060" text-anchor="middle" class="sub">reads the DL-02 as an iButton</text>
+  <text x="860" y="912" text-anchor="end" class="lbl">VCC</text>
+  <text x="860" y="1012" text-anchor="end" class="lbl">GND</text>
+  <text x="860" y="1100" text-anchor="end" class="lbl">1-WIRE</text>
+  <text x="860" y="1124" text-anchor="end" class="sub">iButton input</text>
+
+  <!-- ═══ Wires (halo first, so crossings without a connection show a gap) ═══ -->
+  <use xlink:href="#r1" class="h"/><use xlink:href="#r1" class="w red"/>
+  <use xlink:href="#k1" class="h"/><use xlink:href="#k1" class="w blk"/>
+  <use xlink:href="#r2" class="h"/><use xlink:href="#r2" class="w red"/>
+  <use xlink:href="#k2" class="h"/><use xlink:href="#k2" class="w blk"/>
+  <use xlink:href="#b1" class="h"/><use xlink:href="#b1" class="w brn"/>
+  <use xlink:href="#y1" class="h"/><use xlink:href="#y1" class="w yed"/><use xlink:href="#y1" class="w yel"/>
+  <use xlink:href="#g1" class="h"/><use xlink:href="#g1" class="w grn"/>
+  <use xlink:href="#d1" class="h"/><use xlink:href="#d1" class="w gld"/>
+  <use xlink:href="#r3" class="w red"/>
+
+  <!-- junctions -->
+  <circle cx="1080" cy="650" r="9" fill="#e02424" stroke="#f6f8fc" stroke-width="3"/>
+  <circle cx="1040" cy="700" r="9" fill="#1a1a1a" stroke="#f6f8fc" stroke-width="3"/>
+
+  <!-- ignition switch (drawn over the wires) -->
+  <circle cx="90" cy="890" r="7" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>
+  <circle cx="220" cy="890" r="7" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>
+  <line x1="96" y1="886" x2="205" y2="864" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round"/>
+  <text x="90" y="930" text-anchor="middle" font-size="14" fill="#5b6b85">BATT +</text>
+  <text x="220" y="930" text-anchor="middle" font-size="14" fill="#5b6b85">IGN / ACC</text>
+
+  <!-- wire tags on the DL-02 cable -->
+  <text x="645" y="170" class="tag">POWER (VCC)</text>
+  <text x="645" y="230" class="tag">GND</text>
+  <text x="645" y="290" class="tag">AIN GND REF</text>
+  <text x="645" y="350" class="tag">AIN+</text>
+  <text x="645" y="410" class="tag">1-WIRE</text>
+  <text x="645" y="470" class="tag">DIN1 · IGNITION</text>
+
+  <!-- terminals -->
+  <g stroke-width="3">
+    <rect x="590" y="162" width="36" height="36" rx="6" fill="#fff" stroke="#e02424"/><rect x="600" y="172" width="16" height="16" rx="2" fill="#e02424"/>
+    <rect x="590" y="222" width="36" height="36" rx="6" fill="#fff" stroke="#1a1a1a"/><rect x="600" y="232" width="16" height="16" rx="2" fill="#1a1a1a"/>
+    <rect x="590" y="282" width="36" height="36" rx="6" fill="#fff" stroke="#5b3a1e"/><rect x="600" y="292" width="16" height="16" rx="2" fill="#5b3a1e"/>
+    <rect x="590" y="342" width="36" height="36" rx="6" fill="#fff" stroke="#e0b800"/><rect x="600" y="352" width="16" height="16" rx="2" fill="#ffd60a"/>
+    <rect x="590" y="402" width="36" height="36" rx="6" fill="#fff" stroke="#16a34a"/><rect x="600" y="412" width="16" height="16" rx="2" fill="#16a34a"/>
+    <rect x="590" y="462" width="36" height="36" rx="6" fill="#fff" stroke="#b8860b"/><rect x="600" y="472" width="16" height="16" rx="2" fill="#b8860b"/>
+
+    <rect x="1210" y="427" width="36" height="36" rx="6" fill="#fff" stroke="#5b3a1e"/><rect x="1220" y="437" width="16" height="16" rx="2" fill="#5b3a1e"/>
+    <rect x="1210" y="477" width="36" height="36" rx="6" fill="#fff" stroke="#e0b800"/><rect x="1220" y="487" width="16" height="16" rx="2" fill="#ffd60a"/>
+
+    <rect x="874" y="887" width="36" height="36" rx="6" fill="#fff" stroke="#e02424"/><rect x="884" y="897" width="16" height="16" rx="2" fill="#e02424"/>
+    <rect x="874" y="987" width="36" height="36" rx="6" fill="#fff" stroke="#1a1a1a"/><rect x="884" y="997" width="16" height="16" rx="2" fill="#1a1a1a"/>
+    <rect x="874" y="1082" width="36" height="36" rx="6" fill="#fff" stroke="#16a34a"/><rect x="884" y="1092" width="16" height="16" rx="2" fill="#16a34a"/>
+  </g>
 
   <!-- ═══ Legend ═══ -->
-  <rect class="box" x="1130" y="560" width="330" height="262" rx="12"/>
-  <text x="1150" y="595" class="ttl">WIRE COLOUR LEGEND</text>
-  <g font-size="19" font-weight="600">
-    <line class="w red" x1="1150" y1="625" x2="1210" y2="625"/><text x="1225" y="631" class="tr">POWER (VCC) 10–30 V</text>
-    <line class="w blk" x1="1150" y1="657" x2="1210" y2="657"/><text x="1225" y="663" class="tb">GND</text>
-    <line class="w org" x1="1150" y1="689" x2="1210" y2="689"/><text x="1225" y="695" class="to">AIN GND REF</text>
-    <line class="w yel" x1="1150" y1="721" x2="1210" y2="721"/><text x="1225" y="727" class="ty">AIN+ (sensor signal)</text>
-    <line class="w grn" x1="1150" y1="753" x2="1210" y2="753"/><text x="1225" y="759" class="tg">1-WIRE (data)</text>
-    <line class="w pur" x1="1150" y1="785" x2="1210" y2="785"/><text x="1225" y="791" class="tp">DIN1 (ignition)</text>
+  <text x="1155" y="618" class="ttl">WIRE COLOURS</text>
+  <g font-size="18" font-weight="600" fill="#1f2937">
+    <line class="w red" x1="1155" y1="652" x2="1205" y2="652"/><text x="1222" y="658">POWER (VCC) · 10–30 V</text>
+    <line class="w blk" x1="1155" y1="684" x2="1205" y2="684"/><text x="1222" y="690">GND</text>
+    <line class="w brn" x1="1155" y1="716" x2="1205" y2="716"/><text x="1222" y="722">AIN GND REF</text>
+    <line class="w yed" x1="1155" y1="748" x2="1205" y2="748"/><line class="w yel" x1="1155" y1="748" x2="1205" y2="748"/><text x="1222" y="754">AIN+ · sensor signal</text>
+    <line class="w grn" x1="1155" y1="780" x2="1205" y2="780"/><text x="1222" y="786">1-WIRE · data</text>
+    <line class="w gld" x1="1155" y1="812" x2="1205" y2="812"/><text x="1222" y="818">DIN1 · ignition</text>
   </g>
 
   <!-- ═══ Notes ═══ -->
-  <rect class="note" x="1130" y="842" width="330" height="190" rx="12"/>
-  <circle cx="1160" cy="875" r="16" fill="none" stroke="#1f5fd0" stroke-width="3"/>
-  <text x="1160" y="882" text-anchor="middle" font-size="20" font-weight="700" fill="#1f5fd0">i</text>
-  <g font-size="17" fill="#222">
-    <text x="1188" y="876">All grounds (GND) are connected</text>
-    <text x="1188" y="898">together; VCC is shared with the</text>
-    <text x="1188" y="920">tracker (10–30 V DC).</text>
-    <text x="1148" y="952">DIN1: ignition ON = 10–30 V,</text>
-    <text x="1148" y="974">OFF = 0 V. If DIN1 is not wired, set</text>
-    <text x="1148" y="996">Settings → DIN1 Ignition Input</text>
-    <text x="1148" y="1018">to <tspan font-weight="700">Disabled</tspan>.</text>
+  <circle cx="1162" cy="903" r="15" fill="#1f5fd0"/>
+  <text x="1162" y="910" text-anchor="middle" font-size="19" font-weight="800" fill="#fff">i</text>
+  <g font-size="17" fill="#1f2937">
+    <text x="1190" y="899">All grounds (GND) are connected</text>
+    <text x="1190" y="921">together; VCC is shared with the</text>
+    <text x="1190" y="943">tracker (10–30 V DC).</text>
+    <text x="1152" y="981">DIN1: ignition ON = 10–30 V,</text>
+    <text x="1152" y="1003">OFF = 0 V. If DIN1 is not wired, set</text>
+    <text x="1152" y="1025">Settings → DIN1 Ignition Input</text>
+    <text x="1152" y="1047">to <tspan font-weight="700">Disabled</tspan>.</text>
   </g>
+
+  <text x="1460" y="1196" text-anchor="end" font-size="14" fill="#7a8aa6">DuraLink DL-02 · Firmware v2.1.1 · docs.maruko.co.id</text>
 </svg>

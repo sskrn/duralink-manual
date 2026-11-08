@@ -302,7 +302,11 @@
     
     <h3 id="wiring" style="font-size: 15px; color: #1a4a8a; border-bottom: 1px solid #e0e8f0; padding-bottom: 4px; margin: 22px 0 10px;">3.1 Wiring Diagram</h3>
     <div style="background:#fff; border:1px solid #d0dcea; border-radius:4px; padding:10px; text-align:center; margin-bottom:28px;">
-      <img src="wiring_dl02.jpeg" alt="DL-02 Wiring Diagram" style="max-width:100%; height:auto; display:block; margin:0 auto; border-radius: 2px;">
+      <img src="wiring_dl02.svg" alt="DL-02 wiring diagram: POWER and GND to the 10–30 V supply shared with the tracker, AIN GND REF and AIN+ to the fuel sensor, 1-WIRE to the tracker 1-Wire input, DIN1 to the vehicle ignition (ACC) line" style="max-width:100%; height:auto; display:block; margin:0 auto; border-radius: 2px;">
+    </div>
+    <div class="callout info">
+      <strong>DIN1 (ignition):</strong> connect to the vehicle ignition / ACC line (ON = 10–30 V, OFF = 0 V) so the DL-02 holds the last fuel reading while the ignition is off.
+      If DIN1 is not connected, set <strong>Settings → DIN1 Ignition Input</strong> to <strong>Disabled</strong>.
     </div>
 
     <h3 style="font-size: 15px; color: #1a4a8a; border-bottom: 1px solid #e0e8f0; padding-bottom: 4px; margin: 22px 0 10px;">3.2 Configuration Steps</h3>

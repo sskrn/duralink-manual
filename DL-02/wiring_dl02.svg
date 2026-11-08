@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1060" viewBox="0 0 1500 1060" font-family="'Segoe UI', Arial, Helvetica, sans-serif">
+  <title>DuraLink DL-02 to Teltonika FMx1xx / FMC650 wiring diagram</title>
+  <desc>DL-02 wires: POWER and GND to the 10-30 V DC supply shared with the tracker, AIN GND REF and AIN+ to the analog fuel sensor, 1-WIRE to the tracker 1-Wire input, DIN1 to the vehicle ignition (ACC) line.</desc>
+  <defs>
+    <style>
+      .box   { fill: #ffffff; stroke: #1f5fd0; stroke-width: 3; }
+      .note  { fill: #f4f8ff; stroke: #1f5fd0; stroke-width: 2; stroke-dasharray: 8 6; }
+      .ttl   { fill: #1f5fd0; font-size: 22px; font-weight: 600; letter-spacing: .5px; }
+      .lbl   { font-size: 22px; font-weight: 600; }
+      .small { font-size: 18px; fill: #333; }
+      .w     { fill: none; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+      .red { stroke: #e02020; } .blk { stroke: #111; } .org { stroke: #f08c00; }
+      .yel { stroke: #d4b000; } .grn { stroke: #1a9e2a; } .pur { stroke: #7b3fe4; }
+      .tr { fill: #e02020; } .tb { fill: #111; } .to { fill: #f08c00; }
+      .ty { fill: #b89800; } .tg { fill: #1a9e2a; } .tp { fill: #7b3fe4; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="1060" fill="#ffffff"/>
+  <text x="750" y="58" text-anchor="middle" font-size="40" font-weight="700" fill="#1a4a8a">DuraLink DL-02 to Teltonika FMx1xx / FMC650 — Wiring Diagram</text>
+
+  <!-- ═══ DL-02 ═══ -->
+  <rect class="box" x="60" y="100" width="560" height="420" rx="18"/>
+  <text x="110" y="235" font-size="64" font-weight="800" fill="#111">Dura<tspan fill="#1f5fd0">Link</tspan></text>
+  <rect x="110" y="262" width="150" height="50" rx="12" fill="#111"/>
+  <text x="185" y="297" text-anchor="middle" font-size="30" font-weight="700" fill="#fff">DL-02</text>
+  <text x="280" y="297" font-size="24" fill="#333">Fuel Level Monitor</text>
+  <text x="110" y="460" class="small">Wire colours as on the DL-02 cable</text>
+
+  <!-- DL-02 terminals (y = 150 + 60·n) -->
+  <g>
+    <rect x="590" y="132" width="36" height="36" rx="4" fill="#fff" stroke="#e02020" stroke-width="3"/><rect x="600" y="142" width="16" height="16" fill="#e02020"/>
+    <rect x="590" y="192" width="36" height="36" rx="4" fill="#fff" stroke="#111" stroke-width="3"/><rect x="600" y="202" width="16" height="16" fill="#111"/>
+    <rect x="590" y="252" width="36" height="36" rx="4" fill="#fff" stroke="#f08c00" stroke-width="3"/><rect x="600" y="262" width="16" height="16" fill="#f08c00"/>
+    <rect x="590" y="312" width="36" height="36" rx="4" fill="#fff" stroke="#d4b000" stroke-width="3"/><rect x="600" y="322" width="16" height="16" fill="#d4b000"/>
+    <rect x="590" y="372" width="36" height="36" rx="4" fill="#fff" stroke="#1a9e2a" stroke-width="3"/><rect x="600" y="382" width="16" height="16" fill="#1a9e2a"/>
+    <rect x="590" y="432" width="36" height="36" rx="4" fill="#fff" stroke="#7b3fe4" stroke-width="3"/><rect x="600" y="442" width="16" height="16" fill="#7b3fe4"/>
+  </g>
+  <text x="660" y="158" class="lbl tr">POWER (VCC)</text>
+  <text x="660" y="218" class="lbl tb">GND</text>
+  <text x="660" y="278" class="lbl to">AIN GND REF</text>
+  <text x="660" y="338" class="lbl ty">AIN+</text>
+  <text x="660" y="398" class="lbl tg">1-WIRE</text>
+  <text x="660" y="458" class="lbl tp">DIN1 (IGNITION)</text>
+
+  <!-- ═══ Analog fuel sensor ═══ -->
+  <rect class="box" x="1190" y="100" width="270" height="420" rx="14"/>
+  <text x="1325" y="140" text-anchor="middle" class="ttl">ANALOG FUEL SENSOR</text>
+  <g fill="#e8f0ff" stroke="#1f5fd0" stroke-width="3">
+    <rect x="1255" y="170" width="140" height="28" rx="8"/>
+    <rect x="1290" y="198" width="70" height="22"/>
+    <rect x="1305" y="220" width="40" height="150" rx="6"/>
+  </g>
+  <rect x="1210" y="410" width="30" height="30" rx="4" fill="#fff" stroke="#f08c00" stroke-width="3"/>
+  <rect x="1210" y="460" width="30" height="30" rx="4" fill="#fff" stroke="#d4b000" stroke-width="3"/>
+  <text x="1255" y="434" class="lbl to">GND REF</text>
+  <text x="1255" y="484" class="lbl ty">ANALOG OUT</text>
+
+  <!-- ═══ Power supply ═══ -->
+  <rect class="box" x="50" y="560" width="210" height="150" rx="12"/>
+  <text x="155" y="595" text-anchor="middle" class="ttl">VEHICLE POWER</text>
+  <rect x="100" y="615" width="110" height="55" rx="5" fill="#fff" stroke="#111" stroke-width="3"/>
+  <rect x="115" y="607" width="20" height="8" fill="#111"/><rect x="175" y="607" width="20" height="8" fill="#111"/>
+  <text x="125" y="652" font-size="26" font-weight="700">+</text><text x="178" y="652" font-size="26" font-weight="700">−</text>
+  <text x="155" y="700" text-anchor="middle" font-size="20" font-weight="600">10–30 V DC</text>
+
+  <!-- ═══ Ignition switch ═══ -->
+  <rect class="box" x="50" y="750" width="210" height="150" rx="12"/>
+  <text x="155" y="785" text-anchor="middle" class="ttl">IGNITION</text>
+  <text x="155" y="808" text-anchor="middle" class="small">key switch / ACC</text>
+  <!-- switch symbol -->
+  <circle cx="100" cy="855" r="7" fill="#fff" stroke="#111" stroke-width="3"/>
+  <circle cx="210" cy="855" r="7" fill="#fff" stroke="#111" stroke-width="3"/>
+  <line x1="106" y1="851" x2="195" y2="828" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+  <text x="100" y="890" text-anchor="middle" font-size="15" fill="#333">BATT +</text>
+  <text x="210" y="890" text-anchor="middle" font-size="15" fill="#333">IGN / ACC</text>
+
+  <!-- ═══ Teltonika ═══ -->
+  <rect class="box" x="330" y="780" width="420" height="230" rx="10"/>
+  <text x="495" y="860" text-anchor="middle" font-size="30" font-weight="800" fill="#1f5fd0" font-style="italic">TELTONIKA</text>
+  <text x="495" y="922" text-anchor="middle" font-size="34" font-weight="700" fill="#1a4a8a">FMx1xx / FMC650</text>
+  <text x="495" y="962" text-anchor="middle" class="small">GPS tracker</text>
+  <rect x="660" y="802" width="36" height="36" rx="4" fill="#fff" stroke="#e02020" stroke-width="3"/><rect x="670" y="812" width="16" height="16" fill="#e02020"/>
+  <rect x="660" y="872" width="36" height="36" rx="4" fill="#fff" stroke="#111" stroke-width="3"/><rect x="670" y="882" width="16" height="16" fill="#111"/>
+  <rect x="660" y="942" width="36" height="36" rx="4" fill="#fff" stroke="#1a9e2a" stroke-width="3"/><rect x="670" y="952" width="16" height="16" fill="#1a9e2a"/>
+  <text x="770" y="815" class="lbl tr">VCC</text>
+  <text x="770" y="895" class="lbl tb">GND</text>
+  <text x="770" y="955" class="lbl tg">1-WIRE</text>
+  <text x="770" y="980" class="small">input (iButton)</text>
+
+  <!-- ═══ Wires ═══ -->
+  <!-- POWER bus x=1080 -->
+  <polyline class="w red" points="830,150 1080,150 1080,820 830,820"/>
+  <polyline class="w red" points="260,615 1080,615"/>
+  <line class="w red" x1="696" y1="820" x2="760" y2="820"/>
+  <line class="w red" x1="626" y1="150" x2="650" y2="150"/>
+  <!-- battery + to ignition switch -->
+  <polyline class="w red" points="80,710 80,855 93,855"/>
+  <!-- GND bus x=1040 -->
+  <polyline class="w blk" points="725,210 1040,210 1040,890 830,890"/>
+  <polyline class="w blk" points="260,665 1040,665"/>
+  <line class="w blk" x1="696" y1="890" x2="760" y2="890"/>
+  <line class="w blk" x1="626" y1="210" x2="650" y2="210"/>
+  <!-- AIN GND REF -->
+  <polyline class="w org" points="830,270 1150,270 1150,425 1210,425"/>
+  <line class="w org" x1="626" y1="270" x2="650" y2="270"/>
+  <!-- AIN+ -->
+  <polyline class="w yel" points="725,330 1115,330 1115,475 1210,475"/>
+  <line class="w yel" x1="626" y1="330" x2="650" y2="330"/>
+  <!-- 1-WIRE x=990 -->
+  <polyline class="w grn" points="755,390 990,390 990,960 870,960"/>
+  <line class="w grn" x1="696" y1="960" x2="760" y2="960"/>
+  <line class="w grn" x1="626" y1="390" x2="650" y2="390"/>
+  <!-- DIN1 x=950 -->
+  <polyline class="w pur" points="860,450 950,450 950,730 290,730 290,855 217,855"/>
+  <line class="w pur" x1="626" y1="450" x2="650" y2="450"/>
+
+  <!-- wire crossings without connection: small white gaps -->
+  <g fill="#fff">
+    <rect x="943" y="607" width="14" height="16"/><rect x="943" y="657" width="14" height="16"/>
+    <rect x="983" y="607" width="14" height="16"/><rect x="983" y="657" width="14" height="16"/>
+    <rect x="983" y="722" width="14" height="16"/>
+  </g>
+  <line class="w pur" x1="950" y1="600" x2="950" y2="680"/>
+  <line class="w grn" x1="990" y1="600" x2="990" y2="745"/>
+
+  <!-- junction dots -->
+  <circle cx="1080" cy="615" r="8" fill="#e02020"/>
+  <circle cx="1040" cy="665" r="8" fill="#111"/>
+
+  <!-- ═══ Legend ═══ -->
+  <rect class="box" x="1130" y="560" width="330" height="262" rx="12"/>
+  <text x="1150" y="595" class="ttl">WIRE COLOUR LEGEND</text>
+  <g font-size="19" font-weight="600">
+    <line class="w red" x1="1150" y1="625" x2="1210" y2="625"/><text x="1225" y="631" class="tr">POWER (VCC) 10–30 V</text>
+    <line class="w blk" x1="1150" y1="657" x2="1210" y2="657"/><text x="1225" y="663" class="tb">GND</text>
+    <line class="w org" x1="1150" y1="689" x2="1210" y2="689"/><text x="1225" y="695" class="to">AIN GND REF</text>
+    <line class="w yel" x1="1150" y1="721" x2="1210" y2="721"/><text x="1225" y="727" class="ty">AIN+ (sensor signal)</text>
+    <line class="w grn" x1="1150" y1="753" x2="1210" y2="753"/><text x="1225" y="759" class="tg">1-WIRE (data)</text>
+    <line class="w pur" x1="1150" y1="785" x2="1210" y2="785"/><text x="1225" y="791" class="tp">DIN1 (ignition)</text>
+  </g>
+
+  <!-- ═══ Notes ═══ -->
+  <rect class="note" x="1130" y="842" width="330" height="190" rx="12"/>
+  <circle cx="1160" cy="875" r="16" fill="none" stroke="#1f5fd0" stroke-width="3"/>
+  <text x="1160" y="882" text-anchor="middle" font-size="20" font-weight="700" fill="#1f5fd0">i</text>
+  <g font-size="17" fill="#222">
+    <text x="1188" y="876">All grounds (GND) are connected</text>
+    <text x="1188" y="898">together; VCC is shared with the</text>
+    <text x="1188" y="920">tracker (10–30 V DC).</text>
+    <text x="1148" y="952">DIN1: ignition ON = 10–30 V,</text>
+    <text x="1148" y="974">OFF = 0 V. If DIN1 is not wired, set</text>
+    <text x="1148" y="996">Settings → DIN1 Ignition Input</text>
+    <text x="1148" y="1018">to <tspan font-weight="700">Disabled</tspan>.</text>
+  </g>
+</svg>
